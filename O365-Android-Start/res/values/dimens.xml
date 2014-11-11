@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    
+    <!--  Default values for normal screens for the main activity  -->
+    <dimen name="main_margin">16dp</dimen>
+    <dimen name="main_readme_margin">1dp</dimen>
+    <dimen name="main_pivot_orientation_size">0dp</dimen>
+    
+    <!--  Default values for normal screens for the main buttons fragment -->
+    <dimen name="main_buttons_width">288dp</dimen>
+    <dimen name="main_buttons_height">72dp</dimen>
+    <dimen name="main_buttons_margin">2dp</dimen>
+    <dimen name="main_buttons_padding">8dp</dimen>
+    
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/file_preview_fragment_sub"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/HeaderTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:text="@string/TextFileContents_Label" >
+    </TextView>
+
+    <FrameLayout
+        android:id="@+id/file_viewer_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/file_contents_preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/PreviewBackground"
+            android:color="@android:color/white" >
+        </TextView>
+
+        <EditText
+            android:id="@+id/file_contents_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:textColor="@android:color/black" >
+        </EditText>
+    </FrameLayout>
+
+</LinearLayout>

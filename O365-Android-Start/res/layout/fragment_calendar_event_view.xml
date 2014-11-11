@@ -1,0 +1,105 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/FragmentCalendarEventView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.microsoft.office365.starter.CalendarEventViewFragment" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="292dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/locationText"
+                    android:layout_width="438dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:inputType="text" >
+"
+
+                    <requestFocus />
+                </EditText>
+
+                <EditText
+                    android:id="@+id/subjectText"
+                    android:layout_width="437dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false" >
+
+                    <requestFocus />
+                </EditText>
+
+                <EditText
+                    android:id="@+id/attendeesText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false" >
+
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <android.widget.DatePicker
+                    android:id="@+id/StartDatePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:calendarViewShown="false"
+                    android:enabled="false"
+                    android:foregroundGravity="center" />
+
+                <android.widget.TimePicker
+                    android:id="@+id/startTimePicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="210dp"
+                    android:enabled="false"
+                    android:foregroundGravity="center" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <android.widget.DatePicker
+                android:id="@+id/EndDatePicker"
+                style="@dimen/activity_horizontal_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:calendarViewShown="false"
+                android:enabled="false"
+                android:foregroundGravity="center" />
+
+            <android.widget.TimePicker
+                android:id="@+id/endTimePicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/StartDatePicker"
+                android:layout_toRightOf="@+id/EndDatePicker"
+                android:enabled="false"
+                android:foregroundGravity="center" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

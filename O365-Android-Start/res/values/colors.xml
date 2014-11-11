@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ApplicationPageBackgroundThemeBrush">#1799F0</color>
+    <color name="DisabledItemBrush">#51B2F3</color>
+    
+    <color name="SampleHeaderBrush">#007ACC</color>
+    <color name="HyperLinkBrush">#FFECE4FF</color>
+    <color name="ListBackground">#007ACC</color>
+    <color name="PreviewBackground">#1799F0</color>
+    <color name="Blue">#0033FF</color>
+    <color name="DarkText">#364232</color>
+</resources>

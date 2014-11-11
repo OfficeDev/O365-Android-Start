@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="64dp"
+    android:orientation="horizontal"
+    android:gravity="center"
+    tools:context="com.microsoft.office365.starter.views.MainActivity" >
+
+	<fragment 
+	    android:name="com.microsoft.office365.starter.views.MainReadmeFragment"
+	    android:id="@+id/readmeFragment"
+	    android:layout_weight="1"
+	    android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_margin="4dp" />	
+		
+	<fragment
+	    android:name="com.microsoft.office365.starter.views.MainButtonsFragment"
+	    android:id="@+id/buttonsFragment"
+	    android:layout_weight="1"
+	    android:layout_width="0dp"
+	    android:layout_height="wrap_content" />
+	
+</LinearLayout>

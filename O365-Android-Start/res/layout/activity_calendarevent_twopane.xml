@@ -1,0 +1,135 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <WebView
+        android:id="@+id/CalendarStarterTextWebView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:scrollbars="none"
+        android:text="@string/calendar_view_intro" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:baselineAligned="false"
+        android:divider="?android:attr/dividerHorizontal"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        tools:context="com.microsoft.office365.starter.views.CalendarEventListActivity" >
+
+        <!--
+    This layout is a two-pane layout for the CalendarEvents
+    master/detail flow. See res/values-large/refs.xml and
+    res/values-sw600dp/refs.xml for an example of layout aliases
+    that replace the single-pane version of the layout with
+    this two-pane version.
+
+    For more on layout aliases, see:
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+        -->
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/HeaderTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:gravity="center"
+                android:text="@string/files_buttons_header" >
+            </TextView>
+
+            <Button
+                android:id="@+id/button_calendarGetEvents"
+                style="@style/ButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:onClick="getEvents_OnClick"
+                android:text="@string/button_calendarGetEvents" />
+
+            <Button
+                android:id="@+id/button_calendarCreateEvent"
+                style="@style/ButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:onClick="newEvent_OnClick"
+                android:text="@string/button_calendarCreateEvent" />
+
+            <Button
+                android:id="@+id/button_calendarUpdateEvent"
+                style="@style/ButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:onClick="update_OnClick"
+                android:text="@string/button_calendarUpdateEvent" />
+
+            <Button
+                android:id="@+id/button_calendarDeleteEvent"
+                style="@style/ButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp"
+                android:onClick="delete_OnClick"
+                android:text="@string/button_calendarDeleteEvent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/HeaderTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/TodaysCalendarLabel" >
+            </TextView>
+
+            <fragment
+                android:id="@+id/calendarevent_list"
+                android:name="com.microsoft.office365.starter.views.CalendarEventListFragment"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                tools:layout="@android:layout/list_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:id="@+id/calendarevent_detail_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="3" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

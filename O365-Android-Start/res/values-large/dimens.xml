@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+	<!--  Values for large screens for the main activity  -->
+    <dimen name="main_margin">64dp</dimen>
+    <dimen name="main_readme_margin">4dp</dimen>
+    
+    <!--  Values for large screens for the main buttons fragment -->
+    <dimen name="main_buttons_width">576dp</dimen>
+    <dimen name="main_buttons_height">144dp</dimen>
+    <dimen name="main_buttons_margin">4dp</dimen>
+    <dimen name="main_buttons_padding">16dp</dimen>
+</resources>

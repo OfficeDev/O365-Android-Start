@@ -67,8 +67,8 @@ The details of configuring the Android starter project depend on your current de
 
 
 	Your permissions should look exactly like the following screenshots.
-![SharePoint application permissions](https://github.com/OfficeDev/O365-Android-Start/readme-images/o365-sharepoint-permissions.jpg)
-![Exchange application permissions](https://github.com/OfficeDev/O365-Android-Start/readme-images/o365-exchange-permissions.jpg)
+![SharePoint application permissions](https://github.com/OfficeDev/O365-Android-Start/blob/master/readme-images/o365-sharepoint-permissions.JPG)
+![Exchange application permissions](https://github.com/OfficeDev/O365-Android-Start/blob/master/readme-images/o365-exchange-permissions.JPG)
 
 5. Download or clone the
    [Active Directory Azure Library for Android](https://github.com/AzureAD/azure-activedirectory-library-for-android).

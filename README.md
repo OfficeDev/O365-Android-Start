@@ -64,6 +64,7 @@ The details of configuring the Android starter project depend on your current de
 
 	   ![SharePoint application permissions](/readme-images/o365-sharepoint-permissions.JPG)
 	   * Add the **Office 365 Exchange Online** application (3), and select the **Have full access to users' calendars** permission (4).
+
 	   ![Exchange application permissions](/readme-images/o365-exchange-permissions.JPG)
    * Save the changes.
 

@@ -61,6 +61,7 @@ The details of configuring the Android starter project depend on your current de
    * Choose the **Applications** tab and click the application that you want to configure.
    * In the **permissions to other applications** section, add the following two permissions.
 	   * Add the **Office 365 SharePoint Online** application (1), and select the **Edit or delete users' files** permission (2).
+
 	   ![SharePoint application permissions](/readme-images/o365-sharepoint-permissions.JPG)
 	   * Add the **Office 365 Exchange Online** application (3), and select the **Have full access to users' calendars** permission (4).
 	   ![Exchange application permissions](/readme-images/o365-exchange-permissions.JPG)

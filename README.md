@@ -60,18 +60,11 @@ The details of configuring the Android starter project depend on your current de
    select the Active Directory tab and an Office 365 tenant.
    * Choose the **Applications** tab and click the application that you want to configure.
    * In the **permissions to other applications** section, add the following two permissions.
-	   * Add the **Office 365 SharePoint Online** application, and select the **Edit or delete users' files** permission.
-	   * Add the**Office 365 Exchange Online** application, and select the **Have full access to users' calendars**
+	   * Add the **Office 365 SharePoint Online** application (1), and select the **Edit or delete users' files** permission (2).
+	   ![SharePoint application permissions](/readme-images/o365-sharepoint-permissions.JPG)
+	   * Add the **Office 365 Exchange Online** application (3), and select the **Have full access to users' calendars** permission (4).
+	   ![Exchange application permissions](/readme-images/o365-exchange-permissions.JPG)
    * Save the changes.
-
-
-
-	Your permissions should look exactly like the following screenshots.
-	
-	**SharePoint application permissions**
-![SharePoint application permissions](/readme-images/o365-sharepoint-permissions.JPG)
-**Exchange application permissions**
-![Exchange application permissions](/readme-images/o365-exchange-permissions.JPG)
 
 5. Download or clone the
    [Active Directory Azure Library for Android](https://github.com/AzureAD/azure-activedirectory-library-for-android).
@@ -96,10 +89,11 @@ The details of configuring the Android starter project depend on your current de
 	<br>Note: You can use version 0.9.3 or later of the jars.
 
 	**To build the jar files:**
+	
 	1. Clone the [Office 365 SDK for Android](https://github.com/OfficeDev/Office-365-SDK-for-Android).
-    2. Go to the sdk directory.
-	2. run `.\gradlew clean`.
-	3. run `.\gradlew assemble`.
+	2. Go to the sdk directory.
+	3. Run `.\gradlew clean`.
+	4. Run `.\gradlew assemble`.
 
 16. Open the constants.java file in the com.microsoft.office365.starter package.
 17. Find the CLIENT_ID constant and set its String value equal to the client id you registered in Azure Active Directory.

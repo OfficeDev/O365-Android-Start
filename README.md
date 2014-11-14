@@ -3,13 +3,13 @@
 **Table of contents**
 
 * [Setting up your environment](#setup)
-* [Running the starter project](#running_the_starter_project)
-* [Understanding the code](#understanding_the_code)
+* [Running the starter project](#running)
+* [Understanding the code](#understanding)
    * [Authentication](#authentication)
-   * [Calendar API](#calendar_api)
-   * [Files API](#files_api)
-* [Questions and comments](#questions_and_comments)
-* [Additional resources](#additional_resources)
+   * [Calendar API](#calendar)
+   * [Files API](#files)
+* [Questions and comments](#questions)
+* [Additional resources](#resources)
 
 There are millions of Office 365 users with data in the cloud; imagine building an Android app that gives your customers new and innovative ways to work with their files stored on OneDrive or their calendars stored in Office 365 Exchange. The Office 365 SDK starter project shows you how to use the **Office 365 SDK for Android** from [Microsoft Open Technologies, Inc (MS Open Tech)](http://msopentech.com) to integrate your users' Office 365 and OneDrive data into your app. You can use the starter project as a starting point for your own app; or you can just cut and paste the parts that you want to use.
 
@@ -77,7 +77,7 @@ The details of configuring the Android starter project depend on your current de
 9.  Download the latest version of the [gson library](https://code.google.com/p/google-gson/).
 10. Add the gson jar file to the libs folder of the AuthenticationActivity project.
 11. Download or clone the
-   [Office 365 Starter Project for Android](https://github.com/officedev/o365-android-start/).
+   [Office 365 Starter Project for Android](http://aka.ms/o365-apis-start-android).
 12. Import the starter project into your Eclipse workspace.
 13. Download the latest [guava library](http://code.google.com/p/guava-libraries/).
 14. Add the guava jar file to the libs folder of the o365-android-start project.
@@ -102,7 +102,7 @@ The details of configuring the Android starter project depend on your current de
 17. Find the CLIENT_ID constant and set its String value equal to the client id you registered in Azure Active Directory.
 18. Find the REDIRECT_URI constant and set its String value equal to the redirect URI you registered in Azure Active Directory.
 
-
+<a name="running"/>
 ## Running the starter project
 
 Once you've built the starter project you can run it on an emulator or device. Note that at this time it only runs for landscape mode on tablets.
@@ -111,23 +111,27 @@ Once you've built the starter project you can run it on an emulator or device. N
 3. Click the "Sign in" button and enter your credentials.
 4. Click the calendar or file button to start working with your data.
   
+<a name="understanding"/>
 ## Understanding the code
 
 The starter project uses two objects, **O365FileListModel** and **O365CalendarModel** to manage interactions with Office 365. These two objects wrap calls to the **SharePointClient** and **OutlookClient** objects in the Office 365 SDK for Android. Look at the  `O365APIsStart_Application.getFileClient()` and `O365APIsStart_Application.getCalendarClient()` methods to see how the SDK 
 objects are created.
 
+<a name="authentication"/>
 ### Authentication
 
 The Office 365 SDK for Android uses the Azure Active Directory Library (ADAL) for Android for authentication. The ADAL provides protocol support for OAuth2, Web API integration with user level consent, and two-factor authentication.
 
 The **Authentication** object  manages getting a token from ADAL and returning it to your application.
 
+<a name="calendar"/>
 ### Calendar API
 
 The **O365CalendarModel** object wraps the API operations that create, update and delete calendar events in an Office 365 Exchange calendar. 
 
 The **getEventList()** method gets a list of events from the Office 365 calendar and loads the events into a local list. Changes, deletions, and additions to this list are posted asynchronously to the Office 365 calendar by the **postUpdatedEvent**, **postDeletedEvent**, and **postCreatedEvent** methods. 
 
+<a name="files"/>
 ### Files API
 
 The **O365FileListModel** object wraps the API operations that create, update, and delete files stored on OneDrive.
@@ -136,6 +140,7 @@ The **getFilesAndFoldersFromService** method gets a list of all of the files and
 
 The **getFileDetailsFromService** method returns an **O365FileModel** object containing the selected files contents.
 
+<a name="questions"/>
 ## Questions and comments
 
 We'd love to get your feedback on this Android starter kit. You can send your questions and suggestions to us:
@@ -144,15 +149,15 @@ We'd love to get your feedback on this Android starter kit. You can send your qu
 * On [Stack Overflow](http://stackoverflow.com/questions/tagged/Office365+API). 
   Make sure that your questions or comments are tagged with [Office365] and [API].
   
+<a name="resources"/>
 ## Additional resources
 
 * [Office 365 APIs documentation](http://msdn.microsoft.com/office/office365/howto/platform-development-overview)
 * [File REST operations reference](http://msdn.microsoft.com/en-us/office/office365/api/files-rest-operations)
 * [Calendar REST operations reference](http://msdn.microsoft.com/en-us/office/office365/api/calendar-rest-operations)
-* [Microsoft Office 365 API Tools](https://visualstudiogallery.msdn.microsoft.com/7e947621-ef93-4de7-93d3-d796c43ba34f)
+* [Microsoft Office 365 API Tools](https://visualstudiogallery.msdn.microsoft.com/a15b85e6-69a7-4fdf-adda-a38066bb5155)
 * [Office Dev Center](http://dev.office.com/)
-* [Office 365 APIs Starter Project for Windows](https://github.com/OfficeDev/Office-365-APIs-Starter-Project-for-Windows)
-* [Office 365 APIs Starter Project for ASP.NET MVC](https://github.com/OfficeDev/Office-365-APIs-Starter-Project-for-ASPNETMVC)
+* [Office 365 APIs starter projects and code samples](http://msdn.microsoft.com/en-us/office/office365/howto/starter-projects-and-code-samples)
 
 
 ## Copyright

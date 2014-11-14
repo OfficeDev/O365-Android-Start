@@ -2,7 +2,7 @@
 
 **Table of contents**
 
-* [Setting up your environment](#setting_up_your_environment)
+* [Setting up your environment](#setup)
 * [Running the starter project](#running_the_starter_project)
 * [Understanding the code](#understanding_the_code)
    * [Authentication](#authentication)
@@ -32,6 +32,7 @@ The starter project shows you basic operations using the Files and Calendar serv
 
 We'll be updating the starter project to add other services, such as Email, so make sure to check back.
 
+<a name="setup"/>
 ## Setting up your environment
 
 To use the Office 365 APIs starter project for Android you need the following:

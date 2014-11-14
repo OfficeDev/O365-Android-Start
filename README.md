@@ -38,14 +38,14 @@ We'll be updating the starter project to add other services, such as Email, so m
 To use the Office 365 APIs starter project for Android you need the following:
 
 * The latest version of the [Android Developer Tools](http://developer.android.com/sdk/index.html) including Eclipse.
-* An Office 365 account. You can sign up for [an Office 365 Developer subscription](http://msdn.microsoft.com/en-us/library/office/fp179924.aspx) that includes all of the tools and resources that you need to start building and testing Android apps.
+* An Office 365 account. You can sign up for [an Office 365 Developer subscription](https://portal.microsoftonline.com/Signup/MainSignUp.aspx?OfferId=6881A1CB-F4EB-4db3-9F18-388898DAF510&DL=DEVELOPERPACK) that includes all of the tools and resources that you need to start building and testing Android apps.
 * The [Active Directory Azure Library for Android](https://github.com/AzureAD/azure-activedirectory-library-for-android). You'll need to either clone the repository or  [download the zip file](https://github.com/AzureAD/azure-activedirectory-library-for-android/archive/master.zip).
 * The [Office 365 SDK for Android](https://github.com/OfficeDev/Office-365-SDK-for-Android). You'll need to either clone the repository or [download the zip file](https://github.com/OfficeDev/Office-365-SDK-for-Android/archive/master.zip).
 
 The details of configuring the Android starter project depend on your current development environment. While we can't give you detailed instructions, we can give you the basic steps that you need to follow.
 
 1. Install and configure the Android Developer Tools and Eclipse according to the [instructions](http://developer.android.com/sdk/installing/index.html) on developer.android.com.
-2. [Sign up](http://msdn.microsoft.com/en-us/library/office/fp179924.aspx) for a developer account on Office 365.
+2. [Sign up](https://portal.microsoftonline.com/Signup/MainSignUp.aspx?OfferId=6881A1CB-F4EB-4db3-9F18-388898DAF510&DL=DEVELOPERPACK) for a developer account on Office 365.
 3. Create a new client application in Azure.
    * In the [Azure management portal](https://manage.windowsazure.com/), select the Active Directory tab and an Office 365 tenant.
    * Choose the **Applications** tab and click **Add**.

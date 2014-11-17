@@ -35,7 +35,7 @@ We'll be updating the starter project to add other services, such as Email, so m
 
 <a name="requirements">
 ## Device requirements
-To run the starter project your device need to meet the following requirements:
+To run the starter project your device needs to meet the following requirements:
 * A screen size of 7 inches or larger.
 * Android API version 18 or later.
  

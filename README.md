@@ -2,6 +2,7 @@
 
 **Table of contents**
 
+* [Device requirements](#requirements)
 * [Setting up your environment](#setup)
 * [Running the starter project](#running)
 * [Understanding the code](#understanding)
@@ -31,6 +32,14 @@ The starter project shows you basic operations using the Files and Calendar serv
 * Update text file contents.
 
 We'll be updating the starter project to add other services, such as Email, so make sure to check back.
+
+<a name="requirements">
+## Device requirements
+To run the starter project your device need to meet the following requirements:
+* A screen size of 7 inches or larger.
+* Android API version 18 or later.
+ 
+Note: Currently this sample only supports landscape mode.
 
 <a name="setup"/>
 ## Setting up your environment

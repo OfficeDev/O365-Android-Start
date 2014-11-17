@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +16,12 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import com.microsoft.fileservices.Item;
 import com.microsoft.office365.starter.O365APIsStart_Application;
 import com.microsoft.office365.starter.R;
 import com.microsoft.office365.starter.models.O365FileModel;
 
 public class FileListFragment extends Fragment {
 
-    private FilesActivity parentActivity;
     private O365APIsStart_Application mApplication;
     private ArrayAdapter<O365FileModel> mListAdapter;
 
@@ -40,9 +36,6 @@ public class FileListFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        // store this for accessing shared state that the activity contains
-        parentActivity = (FilesActivity) activity;
     }
 
     public void initialize()

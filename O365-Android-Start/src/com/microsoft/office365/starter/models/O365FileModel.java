@@ -4,24 +4,14 @@
 
 package com.microsoft.office365.starter.models;
 
-import java.io.UnsupportedEncodingException;
-import java.util.concurrent.ExecutionException;
-
 import android.app.Activity;
-import android.util.Log;
-
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.fileservices.Item;
 import com.microsoft.office365.starter.O365APIsStart_Application;
 import com.microsoft.office365.starter.interfaces.OnFileChangedEventListener;
-import com.microsoft.sharepointservices.odata.SharePointClient;
 
 public class O365FileModel {
 
     private OnFileChangedEventListener eventFileChangedListener;
-    private O365APIsStart_Application mApplication;
     private Item fileItem = null;
     private String fileType = null;
 
@@ -73,18 +63,12 @@ public class O365FileModel {
 
     }
 
-    public O365FileModel(O365APIsStart_Application value)
-    {
-        mApplication = value;
-    }
-
     public O365FileModel(O365APIsStart_Application application, Item newFile)
     {
         name = newFile.getname();
         id = newFile.getid();
         fileItem = newFile;
         fileType = newFile.gettype();
-        mApplication = application;
     }
 
     @Override

@@ -28,9 +28,8 @@ import com.microsoft.office365.starter.models.O365FileListModel;
 import com.microsoft.office365.starter.models.O365FileModel;
 import com.microsoft.services.odata.impl.DefaultDependencyResolver;
 
-// TODO: Auto-generated Javadoc
 /**
- * The Class AssetApplication.
+ * The Class O365_APIsStart_Application.
  */
 public class O365APIsStart_Application extends Application {
     private AppPreferences mPreferences;
@@ -40,7 +39,7 @@ public class O365APIsStart_Application extends Application {
     private O365FileListModel fileListViewState;
     private O365FileModel displayedFile;
     private ArrayAdapter<O365FileModel> fileAdapterList;
-    private List<ServiceInfo> mServices; // add this back in when discovery services available
+    private List<ServiceInfo> mServices;
     private com.microsoft.sharepointservices.odata.SharePointClient fileClient;
     private OnSignInResultListener mOnSignInResultListener;
 
@@ -119,15 +118,12 @@ public class O365APIsStart_Application extends Application {
                     final OnSignInResultListener.Event event = new OnSignInResultListener.Event();
                     event.setUserSignInStatus(true);
                     currentActivity.runOnUiThread(new Runnable() {
-
-                        @SuppressWarnings("unchecked")
                         @Override
                         public void run() {
                             mOnSignInResultListener.onSignInResultEvent(event);
 
                         }
                     });
-
                 }
 
                 @Override
@@ -139,7 +135,6 @@ public class O365APIsStart_Application extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     /*
@@ -235,6 +230,9 @@ public class O365APIsStart_Application extends Application {
         return fileClient;
     }
 
+    
+    //This method should get and cache the client. Returned the cached client. It should be good for
+    //the life of the app.
     public com.microsoft.outlookservices.odata.OutlookClient getCalendarClient() {
         DefaultDependencyResolver dependencyResolver = (DefaultDependencyResolver) Controller
                 .getInstance().getDependencyResolver();

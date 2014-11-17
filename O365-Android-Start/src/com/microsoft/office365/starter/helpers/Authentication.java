@@ -74,6 +74,7 @@ public class Authentication {
                                     mLoggedInUser = ui.getUserId();
                                     Editor editor = sharedPref.edit();
                                     editor.putString("UserId", mLoggedInUser);
+                                    editor.putString("DisplayName", ui.getGivenName() + " " + ui.getFamilyName());
                                     editor.commit();
                                 }
                                 else {
@@ -108,34 +109,6 @@ public class Authentication {
         getAuthenticationContext(activity).getCache().removeAll();
     }
 
-    public static void createEncryptionKey(Context applicationContext) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(applicationContext);
-        if (!preferences.contains(Constants.ENCRYPTION_KEY)) {
-            Random r = new Random();
-            byte[] bytes = new byte[32];
-            r.nextBytes(bytes);
-
-            String key = Base64.encodeToString(bytes, Base64.DEFAULT);
-            Editor editor = preferences.edit();
-            editor.putString(Constants.ENCRYPTION_KEY, key);
-            editor.commit();
-        }
-        AuthenticationSettings.INSTANCE.setSecretKey(getEncryptionKey(applicationContext));
-    }
-
-    static byte[] getEncryptionKey(Context applicationContext) {
-        SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(applicationContext);
-        String key = preferences.getString(Constants.ENCRYPTION_KEY, null);
-
-        if (key != null) {
-            byte[] bytes = Base64.decode(key, Base64.DEFAULT);
-            return bytes;
-        } else {
-            return new byte[32];
-        }
-    }
 }
 
 //*********************************************************

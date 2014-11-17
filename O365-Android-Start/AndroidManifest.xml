@@ -11,7 +11,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="20" />
 
     <application
         android:name=".O365APIsStart_Application"
@@ -37,15 +37,6 @@
         </activity>
         <activity
             android:screenOrientation="landscape"
-            android:name=".views.CalendarEventDetailActivity"
-            android:label="@string/title_calendarevent_detail"
-            android:parentActivityName=".views.CalendarEventListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.microsoft.office365.starter.CalendarEventListActivity" />
-        </activity>
-        <activity
-            android:screenOrientation="landscape"
             android:name=".views.FilesActivity"
             android:label="@string/title_activity_files" >
         </activity>
@@ -58,11 +49,6 @@
             android:screenOrientation="landscape"
             android:name="com.microsoft.aad.adal.AuthenticationActivity"
             android:label="Authenticate to Azure AD" >
-        </activity>
-        <activity
-            android:screenOrientation="landscape"
-            android:name=".views.CalendarEventViewActivity"
-            android:label="@string/title_activity_calendar_event_view" >
         </activity>
     </application>
 

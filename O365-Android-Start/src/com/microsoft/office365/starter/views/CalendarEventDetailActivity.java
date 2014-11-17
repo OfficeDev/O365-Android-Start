@@ -11,6 +11,7 @@ import com.microsoft.office365.starter.models.O365CalendarModel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -49,7 +50,9 @@ public class CalendarEventDetailActivity extends Activity {
             mCalendarModel = new O365CalendarModel(this);
 
         // Show the Up button in the action bar.
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar aBar = getActionBar();
+        if (aBar != null)
+            aBar.setDisplayHomeAsUpEnabled(true);
 
         String action = "select";
         Intent fromIntent = getIntent();

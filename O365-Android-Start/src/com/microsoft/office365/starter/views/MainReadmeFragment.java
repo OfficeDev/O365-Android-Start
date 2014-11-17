@@ -28,7 +28,7 @@ public class MainReadmeFragment extends Fragment {
                 R.color.ApplicationPageBackgroundThemeBrush));
         String readmeHtml = getResources().getString(R.string.mainActivity_Readme);
         mReadmeWebView.loadData(readmeHtml, "text/html", "UTF-8");
-        mReadmeWebView.setVisibility(0);
+        mReadmeWebView.setVisibility(View.VISIBLE);
         // Inflate the layout for this fragment
         return fragmentView;
     }

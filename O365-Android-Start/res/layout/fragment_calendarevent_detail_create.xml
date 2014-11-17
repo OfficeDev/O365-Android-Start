@@ -84,7 +84,8 @@
                         android:ems="10"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true" 
+                        android:hint="@+string/Calendar_EventCreateEmailHint"/>
                 </LinearLayout>
             </LinearLayout>
 

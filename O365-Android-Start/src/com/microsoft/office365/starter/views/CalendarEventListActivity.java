@@ -127,13 +127,16 @@ public class CalendarEventListActivity extends Activity implements
         }
         mFragmentManager = getFragmentManager();
 
-        // Load the overview text into the WebView
-        WebView introView = (WebView) findViewById(R.id.CalendarStarterTextWebView);
-        introView.setBackgroundColor(getResources().getColor(
-                R.color.ApplicationPageBackgroundThemeBrush));
-        String introHTML = getResources().getString(R.string.calendar_view_intro);
-        introView.loadData(introHTML, "text/html", "UTF-8");
-        introView.setVisibility(0);
+        if (mTwoPane == true)
+        {
+            // Load the overview text into the WebView
+            WebView introView = (WebView) findViewById(R.id.CalendarStarterTextWebView);
+            introView.setBackgroundColor(getResources().getColor(
+                    R.color.ApplicationPageBackgroundThemeBrush));
+            String introHTML = getResources().getString(R.string.calendar_view_intro);
+            introView.loadData(introHTML, "text/html", "UTF-8");
+            introView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -175,10 +178,15 @@ public class CalendarEventListActivity extends Activity implements
     public void delete_OnClick(View view)
     {
         if (this.selectedEventId.length() == 0)
-            return;
+        {
+            Toast.makeText(CalendarEventListActivity.this, "Select an event to delete",
+                    Toast.LENGTH_LONG).show();
 
+            return;
+        }
+        O365Calendar_Event event = calendarEvents.ITEM_MAP.get(this.selectedEventId);
         Bundle arguments = new Bundle();
-        arguments.putInt("Message", R.string.EventDeleteLabel);
+        arguments.putString("MessageString", "Delete " + event.getSubject() + "?");
         mDeleteDialog = new DeleteDialogFragment();
         mDeleteDialog.setArguments(arguments);
         mDeleteDialog.show(mFragmentManager, "Delete this event?");
@@ -302,8 +310,6 @@ public class CalendarEventListActivity extends Activity implements
     @Override
     public void onDialogPositiveClick(Fragment dialog) {
 
-        mStoredRotation = this.getRequestedOrientation();
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
         if (dialog == mDeleteDialog)
         {
             mParentActivity = this;
@@ -346,8 +352,6 @@ public class CalendarEventListActivity extends Activity implements
     // Called when the user click the Get Events button on this activity
     public void getEventList()
     {
-        mStoredRotation = mParentActivity.getRequestedOrientation();
-        mParentActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
         mDialog = new ProgressDialog(mParentActivity);
         mDialog.setTitle("Retrieving Events...");
         mDialog.setMessage("Please wait.");
@@ -376,17 +380,18 @@ public class CalendarEventListActivity extends Activity implements
 
             @Override
             public void run() {
+                CalendarEventListFragment calendarListFragment = (CalendarEventListFragment) getFragmentManager()
+                        .findFragmentById(R.id.calendarevent_list);
                 if (!eventCollection.getEventCollection().isEmpty())
                 {
-                    mListAdapter = new ArrayAdapter<O365CalendarModel.O365Calendar_Event>(
-                            CalendarEventListActivity.this,
-                            android.R.layout.simple_list_item_activated_1,
-                            android.R.id.text1, eventCollection.getEventCollection());
+                    //Not necessary to check the ArrayAdapter type because the type is always set as cast in the
+                    //following code
+                    ((ArrayAdapter<O365CalendarModel.O365Calendar_Event>) calendarListFragment
+                            .getListAdapter())
+                            .notifyDataSetChanged();                    
 
-                    CalendarEventListFragment calenderListFragment = (CalendarEventListFragment) getFragmentManager()
-                            .findFragmentById(R.id.calendarevent_list);
-                    calenderListFragment.getListView().setVisibility(View.VISIBLE);
-                    calenderListFragment.setListAdapter(mListAdapter);
+                    calendarListFragment.getListView().setVisibility(View.VISIBLE);
+                    calendarListFragment.setListAdapter(mListAdapter);
 
                     if (mDialog.isShowing())
                     {
@@ -434,15 +439,12 @@ public class CalendarEventListActivity extends Activity implements
                 ((ArrayAdapter<O365CalendarModel.O365Calendar_Event>) calenderListFragment
                         .getListAdapter())
                         .notifyDataSetChanged();
+                
                 if (((ArrayAdapter<O365CalendarModel.O365Calendar_Event>) calenderListFragment
                         .getListAdapter()).isEmpty() == false)
                 {
                     getSelectedItem(opResult.getId());
-
-                    // Set the event id of the newly selected list event.
-                    CalendarEventListActivity.this.selectedEventId = ((ArrayAdapter<O365CalendarModel.O365Calendar_Event>) calenderListFragment
-                            .getListAdapter())
-                            .getItem(0).id;
+                    CalendarEventListActivity.this.selectedEventId="";
 
                 }
 

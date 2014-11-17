@@ -5,7 +5,6 @@
 
         <EditTextPreference
             android:name="clientId"
-            android:defaultValue="@string/clientid"
             android:key="prefAADClientId"
             android:summary="Enter the client ID"
             android:title="@string/main_preferences_clientid" >
@@ -13,7 +12,6 @@
 
         <EditTextPreference
             android:name="redirect_url"
-            android:defaultValue="@string/redirecturl"
             android:key="prefAADRedirectUrl"
             android:summary="Enter the Redirect URI"
             android:title="@string/main_preferences_redirecturi" >

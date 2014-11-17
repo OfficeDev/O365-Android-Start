@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,11 +47,12 @@ import com.microsoft.office365.starter.interfaces.OnOperationCompleteListener.Op
 */
 public class O365CalendarModel {
 
-    CalendarEvents mCalendarEvents;
-    O365APIsStart_Application mApplication;
+    private CalendarEvents mCalendarEvents;
+    private O365APIsStart_Application mApplication;
     private OnEventsAddedListener mEventSelectionListener;
     private OnOperationCompleteListener mEventOperationCompleteListener;
-
+    private UUID tempNewEventId;
+    
     public void setEventSelectionListener(OnEventsAddedListener eventSelectionListener) {
         this.mEventSelectionListener = eventSelectionListener;
     }
@@ -68,12 +72,24 @@ public class O365CalendarModel {
     }
 
     // This overload is called when a user is creating a new event.
-    public O365CalendarModel.O365Calendar_Event createEvent(String subject)
+    public O365CalendarModel.O365Calendar_Event createEvent( String subject)
     {
+        //Create a temporary unique event Id for the new event. The 
+        //temporary Id is used by the ListView to uniquely id the new event
+        //when it is added to the local cache before posting to the Outlook service
+        UUID ID = java.util.UUID.randomUUID();
+        
+        //Cache the temp Id in the calendar model so the model can retrieve the
+        //Event out of the ITEMS_MAP map and update with the Id assigned by 
+        //Outlook service upon successful add
+        tempNewEventId = ID;
+
         // The com.microsoft.office365.OutlookServices.Event is created
         // and cached in the event model
         Event newEvent = new Event();
-        return new O365CalendarModel.O365Calendar_Event(subject, newEvent);
+        O365CalendarModel.O365Calendar_Event newEventModel = new O365CalendarModel.O365Calendar_Event(subject, newEvent);
+        newEventModel.setID(ID.toString());
+        return newEventModel;
     }
 
     // This overload is called when Event objects are retrieved from the OutlookServices
@@ -229,7 +245,14 @@ public class O365CalendarModel {
                             , "Added event"
                             , result.getId());
 
-                    eventToAdd.thisEvent = result;
+                    eventToAdd.setEvent(result);
+                    
+                    //Update event collection.ITEM_MAP with updated Event.ID
+                    if (mCalendarEvents.ITEM_MAP.containsKey(tempNewEventId.toString()))
+                            mCalendarEvents.ITEM_MAP.remove(tempNewEventId.toString());
+                    
+                    tempNewEventId = null;
+                    mCalendarEvents.ITEM_MAP.put(result.getId(),eventToAdd);
                     mEventOperationCompleteListener.onOperationComplete(opResult);
                 }
 
@@ -242,6 +265,7 @@ public class O365CalendarModel {
                             , "Event was not added: " + getErrorMessage(t.getMessage())
                             , "-1");
 
+                    tempNewEventId = null;
                     mEventOperationCompleteListener.onOperationComplete(opResult);
                 }
             });
@@ -293,14 +317,19 @@ public class O365CalendarModel {
         return;
     }
 
+    //Takes the string returned from Outlook service in the
+    //onFailure event, parses for the JSON object, and gets
+    //the actual error message
     private String getErrorMessage(String result)
     {
         String errorMessage = "";
         try {
+            
+            //Gets the JSON object out of the result string
             String responsejSON = result
                     .substring(result.indexOf("{"),result.length()); 
+            
             JSONObject jObject = new JSONObject(responsejSON);
-
             JSONObject error =  (JSONObject) jObject.get("error");
             errorMessage = error.getString("message");
 
@@ -377,16 +406,14 @@ public class O365CalendarModel {
      * A single calendar event. The class exposes event properties as simple strings
      */
     public class O365Calendar_Event {
-        public String id;
-        public String content;
-        String subject = " ";
-        String attendees = "";
-        String locationString = "";
-        ItemBody itemBody;
-        String itemBodyString = "";
+        private String id;
+        private String subject = " ";
+        private String attendees = "";
+        private String locationString = "";
+        private ItemBody itemBody;
+        private String itemBodyString = "";
         private Location location;
-        Calendar endDateTime;
-        Event thisEvent;
+        private Event thisEvent;
 
         // Sets the subject property of an event and
         // sets the event item body (content) with the
@@ -396,13 +423,17 @@ public class O365CalendarModel {
             subject = Subject;
             if (this.itemBody != null)
             {
-                content = subject;
                 this.itemBody.setContent(Subject);
                 this.itemBody.setContentType(BodyType.Text);
                 thisEvent.setSubject(Subject);
             }
         }
 
+        public void setEvent(Event event)
+        {
+            thisEvent = event;
+            this.id = event.getId();
+        }
         // Updates the subject of the event
         public void updateSubject(String Subject)
         {
@@ -426,6 +457,10 @@ public class O365CalendarModel {
             return returnValue;
         }
 
+        public String getID()
+        {
+            return this.id;
+        }
         // Returns a comma delimited list of attendee
         // email addresses
         public String getAttendees()
@@ -440,16 +475,10 @@ public class O365CalendarModel {
                     for (Attendee a : attendeeList)
                     {
                         String charSeparator = "";
-                        String attendeeName = a.getEmailAddress().getName();
+                        String attendeeName = a.getEmailAddress().getAddress();
 
                         if (attendeeList.size() > 1)
                             charSeparator = "; ";
-
-                        // New Attendee objects that have not been posted to Outlook service
-                        // do not have resolved name objects. In this case, use the Address which
-                        // is always filled.
-                        if (attendeeName == null)
-                            attendeeName = a.getEmailAddress().getAddress();
 
                         String newName = attendeeName;
                         attendees += newName + charSeparator;
@@ -469,17 +498,32 @@ public class O365CalendarModel {
             return attendees;
         }
 
+        public void setID(String newId)
+        {
+            id = newId;
+        }
         // Add new attendees to the existing list of event attendees
         public void setAttendees(String anAttendee)
         {
+            
+            Pattern pattern;
+            Matcher matcher;
+           
+             String EMAIL_PATTERN = 
+                    "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+             
+             pattern = Pattern.compile(EMAIL_PATTERN);
             // If the event has no attendees, just add the new list.
             if (thisEvent.getAttendees() == null || thisEvent.getAttendees().isEmpty())
             {
                 String[] attendeeArray = anAttendee.split(";");
                 for (String attendeeString : attendeeArray)
                 {
-                    if (attendeeString.contains("@") && attendeeString.contains("."))
-                        makeAnAttendee(attendeeString.trim());
+                    //Add attendee if attendeeString is an email address
+                    matcher = pattern.matcher(attendeeString);
+                    if (matcher.matches())
+                       makeAnAttendee(attendeeString.trim());
                 }
             }
             else
@@ -489,17 +533,22 @@ public class O365CalendarModel {
                 // the name is not in the list, add the new string as an invitee
 
                 // The comma delimited list of attendees from UI
-                String[] attendeeArray = anAttendee.split(";");
+                String[] attendeeArray = anAttendee.trim().split(";");
 
                 // The existing attendee list from the event
                 List<Attendee> attendeeList = thisEvent.getAttendees();
                 checkRemoveAttendeFromList(anAttendee, attendeeList);
 
-                // Iterate on attendee array
-                for (String attendeeString : attendeeArray)
+                if (attendeeArray.length > 0)
                 {
-                    if (attendeeString.contains("@") && attendeeString.contains("."))
-                        checkAddAttendeeToEvent(attendeeString, attendeeList);
+                    // Iterate on attendee array
+                    for (String attendeeString : attendeeArray)
+                    {
+                        //Add attendee if attendeeString is an email address
+                        matcher = pattern.matcher(attendeeString);
+                        if (matcher.matches())
+                            checkAddAttendeeToEvent(attendeeString, attendeeList);
+                    }
                 }
             }
         }
@@ -509,28 +558,13 @@ public class O365CalendarModel {
         {
             attendeeToAdd = attendeeToAdd.trim();
             Boolean inList = false;
-
             // Iterate on attendee list
             for (Attendee a : attendeeList)
             {
-                if (!attendeeToAdd.contains("@") && a.getEmailAddress().getName() != null)
+                if (a.getEmailAddress().getAddress().equals(attendeeToAdd))
                 {
-                    // The Name property of an event attendee is null if the
-                    // Attendee object was created with a person name instead of
-                    // a resolvable email address
-                    if (a.getEmailAddress().getName().trim().equals(attendeeToAdd.trim()))
-                    {
-                        inList = true;
-                        break;
-                    }
-                }
-                else
-                {
-                    if (a.getEmailAddress().getAddress().equals(attendeeToAdd))
-                    {
-                        inList = true;
-                        break;
-                    }
+                    inList = true;
+                    break;
                 }
             }
             if (inList == false)
@@ -542,7 +576,7 @@ public class O365CalendarModel {
         // Any names removed from the attendee list on the UI are removed from the attendee
         // collection
         // on the event.
-        private void checkRemoveAttendeFromList(String attendeNames, List<Attendee> attendeeList)
+        private void checkRemoveAttendeFromList(String attendeeAddresses, List<Attendee> attendeeList)
         {
             List<Attendee> attendeesToRemove = new ArrayList<Attendee>();
 
@@ -550,12 +584,17 @@ public class O365CalendarModel {
             // to be removed from the Attendee collection
             for (Attendee attendee : attendeeList)
             {
-                String attendeeName = attendee.getEmailAddress().getName();
+                String attendeeAddress = attendee.getEmailAddress().getAddress();
 
+                //If the Attendee name is blank but the email address is filled and 
+                //formatted correctly
+                if (attendeeAddress == null)
+                    attendeeAddress = attendee.getEmailAddress().getAddress();
+                
                 // If the name of the attendee is not in the comma delimited
                 // list of attendee names from the UI then add to the
                 // to-be-removed collection
-                if (!attendeNames.contains(attendeeName))
+                if (!attendeeAddresses.contains(attendeeAddress))
                 {
                     attendeesToRemove.add(attendee);
                 }

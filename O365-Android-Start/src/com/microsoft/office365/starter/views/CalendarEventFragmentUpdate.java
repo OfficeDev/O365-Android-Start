@@ -5,6 +5,9 @@
 package com.microsoft.office365.starter.views;
 
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
@@ -120,6 +123,16 @@ public class CalendarEventFragmentUpdate extends Fragment implements View.OnClic
     // Save event property changes before posting to Outlook service
     private void saveEventDetails()
     {
+        
+        Pattern pattern;
+        Matcher matcher;
+       
+         String EMAIL_PATTERN = 
+                "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+         
+         pattern = Pattern.compile(EMAIL_PATTERN);
+
         Editable subject = ((EditText) rootView.findViewById(R.id.subjectText))
                 .getText();
         mO365Event.updateSubject(subject.toString());
@@ -130,8 +143,20 @@ public class CalendarEventFragmentUpdate extends Fragment implements View.OnClic
 
         Editable attendee = ((EditText) rootView.findViewById(R.id.attendeesText))
                 .getText();
-        mO365Event.setAttendees(attendee.toString());
-
+        
+        // The comma delimited list of attendees from UI
+        String[] attendeeArray = attendee.toString().split(";");
+        // Iterate on attendee array
+        StringBuilder sBuilder = new StringBuilder();
+        for (String attendeeString : attendeeArray)
+        {
+            //Validate the attendee string as an email
+            matcher = pattern.matcher(attendeeString);
+            if (matcher.matches())
+                sBuilder.append(attendeeString+";");
+        }
+        mO365Event.setAttendees(sBuilder.toString());
+        
         DatePicker startDatePicker = ((DatePicker) rootView.findViewById(R.id.StartDatePicker));
         TimePicker startClock = ((TimePicker) rootView.findViewById(R.id.startTimePicker));
         mO365Event.setStartDate(

@@ -5,6 +5,10 @@
 package com.microsoft.office365.starter.views;
 
 import java.util.Calendar;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Fragment;
@@ -18,6 +22,7 @@ import android.widget.TimePicker;
 import com.microsoft.office365.starter.R;
 import com.microsoft.office365.starter.interfaces.NoticeDialogListener;
 import com.microsoft.office365.starter.models.O365CalendarModel;
+import com.microsoft.outlookservices.Attendee;
 
 public class CalendarEventFragmentCreate extends Fragment implements View.OnClickListener
 {
@@ -84,7 +89,7 @@ public class CalendarEventFragmentCreate extends Fragment implements View.OnClic
 
     private void addItem(O365CalendarModel.O365Calendar_Event item) {
         mCalendarListActivity.mCalendarModel.getCalendar().ITEMS.add(item);
-        mCalendarListActivity.mCalendarModel.getCalendar().ITEM_MAP.put(item.id, item);
+        mCalendarListActivity.mCalendarModel.getCalendar().ITEM_MAP.put(item.getID(), item);
     }
 
     private void loadEventDetails()
@@ -103,14 +108,14 @@ public class CalendarEventFragmentCreate extends Fragment implements View.OnClic
 
         startDatePicker.init(
                 calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONDAY),
+                calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH), null);
 
         DatePicker endDatePicker = ((DatePicker) rootView.findViewById(R.id.EndDatePicker));
 
         endDatePicker.init(
                 calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONDAY),
+                calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH), null);
 
         TimePicker startClock = ((TimePicker) rootView.findViewById(R.id.startTimePicker));
@@ -125,6 +130,14 @@ public class CalendarEventFragmentCreate extends Fragment implements View.OnClic
     // Saves the user's choices in the event model before posting new event to Outlook service
     private void saveEventDetails()
     {
+        Pattern pattern;
+        Matcher matcher;
+       
+         String EMAIL_PATTERN = 
+                "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+         
+         pattern = Pattern.compile(EMAIL_PATTERN);
         Editable subject = ((EditText) rootView.findViewById(R.id.subjectText))
                 .getText();
         mNewEventModel.updateSubject(subject.toString());
@@ -135,7 +148,19 @@ public class CalendarEventFragmentCreate extends Fragment implements View.OnClic
 
         Editable attendee = ((EditText) rootView.findViewById(R.id.attendeesText))
                 .getText();
-        mNewEventModel.setAttendees(attendee.toString());
+        
+        // The comma delimited list of attendees from UI
+        String[] attendeeArray = attendee.toString().split(";");
+        // Iterate on attendee array
+        StringBuilder sBuilder = new StringBuilder();
+        for (String attendeeString : attendeeArray)
+        {
+            //Validate the attendee string as an email
+            matcher = pattern.matcher(attendeeString);
+            if (matcher.matches())
+                sBuilder.append(attendeeString+";");
+        }
+        mNewEventModel.setAttendees(sBuilder.toString());
 
         DatePicker startDatePicker = ((DatePicker) rootView.findViewById(R.id.StartDatePicker));
         TimePicker startClock = ((TimePicker) rootView.findViewById(R.id.startTimePicker));

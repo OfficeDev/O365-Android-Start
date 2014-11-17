@@ -6,7 +6,10 @@ package com.microsoft.office365.starter.views;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,7 +29,6 @@ import com.microsoft.office365.starter.helpers.Constants;
 import com.microsoft.office365.starter.interfaces.MainActivityCoordinator;
 import com.microsoft.office365.starter.interfaces.OnSignInResultListener;
 import com.microsoft.office365.starter.models.AppPreferences;
-import com.microsoft.office365.starter.models.O365FileModel;
 import com.microsoft.services.odata.impl.DefaultDependencyResolver;
 
 public class MainActivity extends Activity implements MainActivityCoordinator,
@@ -43,7 +45,6 @@ public class MainActivity extends Activity implements MainActivityCoordinator,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Authentication.createEncryptionKey(getApplicationContext());
         mApplication = (O365APIsStart_Application) getApplication();
         mApplication.setOnSignInResultListener(this);
         mAppPreferences = (mApplication).getAppPreferences();
@@ -113,6 +114,8 @@ public class MainActivity extends Activity implements MainActivityCoordinator,
 
         MenuItem signInMenuItem = mMenu.findItem(R.id.menu_signin);
         signInMenuItem.setIcon(R.drawable.user_signedout);
+        
+        signInMenuItem.setTitle(R.string.MainActivity_SignInButtonText);
     }
 
     @Override
@@ -165,11 +168,16 @@ public class MainActivity extends Activity implements MainActivityCoordinator,
             // User was signed in so activate the buttons.
             mButtonsFragment.setButtonsEnabled(true);
 
-            MenuItem signInMenuItem = mMenu.findItem(R.id.menu_signin);
+			MenuItem signInMenuItem = mMenu.findItem(R.id.menu_signin);
             signInMenuItem.setIcon(R.drawable.user_default_signedin);
+            
+            SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+            String displayName = sharedPref.getString("DisplayName", "");
+            
+            signInMenuItem.setTitle(displayName);
         }
         else
-            Toast.makeText(this, "Error signing in", 3).show();
+            Toast.makeText(this, "Error signing in", Toast.LENGTH_LONG).show();
 
     }
 }

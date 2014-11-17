@@ -35,23 +35,30 @@ public class DeleteDialogFragment extends DialogFragment {
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(
-                getArguments()
-                        .getInt("Message")
-                ).setPositiveButton(R.string.Ok, new DialogInterface.OnClickListener()
-                {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        mListener.onDialogPositiveClick(DeleteDialogFragment.this);
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id)
-                    {
-                        mListener.onDialogNegativeClick(DeleteDialogFragment.this);
-                    }
-                });
-        // Create the AlertDialog object and return it
+        
+        if (getArguments().containsKey("MessageString"))
+        {
+            builder.setMessage(getArguments().getString("MessageString"));
+        }
+        else
+        {
+            builder.setMessage(getArguments().getInt("Message"));
+        }
+        
+        builder.setPositiveButton(R.string.Ok, new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface dialog, int id)
+            {
+                mListener.onDialogPositiveClick(DeleteDialogFragment.this);
+            }
+        })
+        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id)
+            {
+                mListener.onDialogNegativeClick(DeleteDialogFragment.this);
+            }
+        });
+    // Create the AlertDialog object and return it
         return builder.create();
     }
 }

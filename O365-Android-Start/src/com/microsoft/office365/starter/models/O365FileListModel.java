@@ -104,7 +104,6 @@ public class O365FileListModel {
             errorMessage = error.getString("message");
 
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             errorMessage = e.getMessage();
         }

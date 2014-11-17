@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">Office 365 Starter Project</string>
     <string name="title_Home">Home</string>
     <string name="title_section1">Calendar</string>
@@ -28,7 +27,7 @@
     <string name="mainButton_Contacts">Contacts</string>
     <string name="mainActivity_Overview">Overview</string>
     <string name="FoldersAndFilesActivity_ListLabel">Folders and files</string>
-    <string name="TodaysCalendarLabel">Todays Calendar</string>
+    <string name="TodaysCalendarLabel">Today\'s Calendar</string>
     <string name="CalendarEdit_TitlePlaceholder">Title:</string>
     <string name="CalendarEdit_LocationPlaceholder">Location:</string>
     <string name="CalendarEdit_AttendeesPlaceholder">Attendees:</string>
@@ -41,24 +40,30 @@
     <string name="list_Label">Files and Folders</string>
     <string name="calendarActivity_Overview"> To get started, select the Get calendar events button. This will get a list of events that occur between 6 hours before and after the current time. Learn more about the REST API calls made in this application by reading Calendar REST API in Office 365 APIs</string>
     <string name="mainActivity_Readme">
-        		&lt;html&gt;&lt;head&gt;&lt;style&gt;
-				body {
-					color: white;}
-				a {
-				color: #FFECE4;}
-				&lt;/style&gt;&lt;/head&gt;
-				&lt;body&gt;
-				&lt;p&gt;This sample uses the&lt;b&gt;&lt;a href="https://github.com/OfficeDev/Office-365-SDK-for-Android"&gt;Office 365 SDK for Android&lt;/a&gt;&lt;/b&gt; client library to show how to
-				&lt;b&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/office/dn605892(v=office.15).aspx"&gt; develop for the Office 365 platform&lt;/a&gt;&lt;/b&gt; on Android. It illustrates basic 
-				operations against the Calendar and My Files service endpoints in Office 365. It also demonstrates how to authenticate against multiple Office 365 services in your app.&lt;/p&gt;
-				&lt;p&gt;To run this sample:&lt;/p&gt;&lt;ol&gt;&lt;li&gt;Add a &lt;b&gt;native&lt;/b&gt; application to Azure Active Directory. Configure the following permissions to other applications:&lt;/li&gt;
-				&lt;ul&gt;&lt;li&gt;(Office 365 SharePoint Online) - Edit or delete users\' files&lt;/li&gt;&lt;li&gt;(Office 365 Exchange Online) - Have full access to users\' calendars&lt;/li&gt;&lt;/ul&gt;
-				For more information, see &lt;b&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/azure/dn132599.aspx"&gt;Adding, Updating, and Removing an Application&lt;/a&gt;&lt;/b&gt;.
-				&lt;li&gt;Take note of the client id and redirect uri values of the application in Azure Management Portal.&lt;/li&gt;
-				&lt;li&gt;In this app, go to the &lt;b&gt;Preferences&lt;/b&gt; menu in the action bar and enter the client id and redirect uri of the application.&lt;/li&gt;
-				&lt;li&gt;Click the sign in button in the action bar.&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;For more information, see &lt;b&gt;&lt;a href="http://aka.ms/o365-apis-start-android"&gt;
-				Office 365 APIs Starter Project for Android Readme&lt;/a&gt;&lt;/b&gt;. &lt;/p&gt;
-				&lt;/body&gt;&lt;/html&gt;
+        &lt;html&gt;&lt;head&gt;&lt;style&gt;
+        body {color: white;}
+        a {color: #FFECE4;}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+        &lt;p&gt;This sample uses the &lt;b&gt;&lt;a href="https://github.com/OfficeDev/Office-365-SDK-for-Android"&gt;Office
+        365 SDK for Android&lt;/a&gt;&lt;/b&gt; client library to show how to &lt;b&gt;&lt;a
+        href="http://msdn.microsoft.com/en-us/library/office/dn605892(v=office.15).aspx"&gt;
+        develop for the Office 365 platform&lt;/a&gt;&lt;/b&gt; on Android. It illustrates 
+		basic operations against the Calendar and My Files service endpoints in Office 
+		365. It also demonstrates how to authenticate against multiple Office 365 services 
+		in your app.&lt;/p&gt;&lt;p&gt;To access your Office 365 tenant using this sample:&lt;/p&gt;&lt;ol&gt;&lt;li&gt;Add 
+		a &lt;b&gt;native&lt;/b&gt; application to Azure Active Directory. Configure the
+		following permissions to other applications:&lt;/li&gt;&lt;ul&gt;&lt;li&gt;(Office 
+		365 SharePoint Online) - Edit or delete users\' files&lt;/li&gt;&lt;li&gt;(Office 
+		365 Exchange Online) - Have full access to users\' calendars&lt;/li&gt;&lt;/ul&gt;
+		For more information, see &lt;b&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/azure/dn132599.aspx"&gt;Adding,
+		Updating, and Removing an Application&lt;/a&gt;&lt;/b&gt;.&lt;li&gt;Take 
+		note of the client id and redirect uri values of the application in Azure Management 
+		Portal.&lt;/li&gt;&lt;li&gt;In the source &lt;strong&gt;constants.java&lt;/strong&gt; 
+		file, enter the client id and redirect uri of the application.&lt;/li&gt;&lt;li&gt;Compile 
+		and run this sample.&lt;/li&gt;&lt;li&gt;Click the sign in button in the action 
+		bar.&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;For more information, see &lt;b&gt;&lt;a 
+		href="http://aka.ms/o365-apis-start-android"&gt;Office 365 APIs Starter Project 
+		for Android Readme&lt;/a&gt;&lt;/b&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+
 	</string>
     <string name="title_activity_calendar">CalendarActivity</string>
     <string name="hello_world">Office 365 API Starter project!</string>
@@ -112,17 +117,15 @@ REST API in Office 365 APIs&lt;/a%gt;&lt;/b&gt;.&lt;/p&gt;
      <string name="Calendar_UpdateEventDetails">Update event details</string>
      <string name="title_calendarevent_detail">Calendar Event Detail</string>
     <string name="preferences">Preferences</string>
-    <string name="MainActivity_SignInButtonText">Sign In</string>
+    <string name="MainActivity_SignInButtonText">(not connected)</string>
     <string name="button_calendarGetEvents">Get calendar events</string>
     <string name="button_calendarCreateEvent">Create event</string>
     <string name="button_calendarUpdateEvent">Update event</string>
     <string name="button_calendarDeleteEvent">Delete event</string>
     <string name="button_UndoUpdate">Undo</string>
-    <string name="clientid"></string>
-    <string name="redirecturl"></string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
-    <string name="Ok">Ok</string>
+    <string name="Ok">OK</string>
     <string name="EventDeleteLabel">Delete this event?</string>
     <string name="FileDeleteLabel">Delete this file?</string>
     <string name="clear_tokens">Clear tokens</string>
@@ -130,4 +133,5 @@ REST API in Office 365 APIs&lt;/a%gt;&lt;/b&gt;.&lt;/p&gt;
     <string name="main_preferences_clientid">Client ID</string>
     <string name="main_preferences_redirecturi">Redirect URI</string>
     <string name="title_activity_calendar_event_view">CalendarEventViewActivity</string>
+    <string name="Calendar_EventCreateEmailHint">danl@contoso.com;maryp@contoso.com</string>
 </resources>

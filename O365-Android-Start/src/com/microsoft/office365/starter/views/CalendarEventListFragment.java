@@ -159,7 +159,7 @@ public class CalendarEventListFragment extends ListFragment implements OnEventsA
 
         // This smells. Is there a way to know what to cast Activity to?
         CalendarEventListActivity parentActivity = (CalendarEventListActivity) getActivity();
-        mCallbacks.onItemSelected(parentActivity.calendarEvents.ITEMS.get(position).id);
+        mCallbacks.onItemSelected(parentActivity.calendarEvents.ITEMS.get(position).getID());
     }
 
     @Override

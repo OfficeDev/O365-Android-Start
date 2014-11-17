@@ -7,7 +7,6 @@ package com.microsoft.office365.starter.views;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -17,19 +16,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.WebView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.microsoft.office365.starter.O365APIsStart_Application;
 import com.microsoft.office365.starter.R;
 import com.microsoft.office365.starter.interfaces.BaseDialogListener;
 import com.microsoft.office365.starter.interfaces.OnOperationCompleteListener;
-import com.microsoft.office365.starter.models.O365CalendarModel.O365Calendar_Event;
-import com.microsoft.office365.starter.models.O365CalendarModel;
 import com.microsoft.office365.starter.models.O365FileListModel;
 import com.microsoft.office365.starter.models.O365FileModel;
 
@@ -84,7 +79,7 @@ public class FilesActivity extends Activity implements BaseDialogListener,
                 R.color.ApplicationPageBackgroundThemeBrush));
         String introHTML = getResources().getString(R.string.files_view_intro);
         introView.loadData(introHTML, "text/html", "UTF-8");
-        introView.setVisibility(0);
+        introView.setVisibility(View.VISIBLE);
     }
 
     public OnClickListener mReadClickedHandler = new OnClickListener()
@@ -195,7 +190,7 @@ public class FilesActivity extends Activity implements BaseDialogListener,
     {
         @Override
         public void onClick(View v) {
-            DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy hh:mm:ss a");
+            DateFormat dateFormat =  DateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM); 
             Date date = new Date();
             final String fileContents = "Created at " + dateFormat.format(date);
             mDialog = new ProgressDialog(FilesActivity.this);
@@ -218,7 +213,14 @@ public class FilesActivity extends Activity implements BaseDialogListener,
         public void onClick(View v) {
         	if (mApplication.getFileListViewState().getSelectedItem()==-1) return;
             Bundle arguments = new Bundle();
-            arguments.putInt("Message", R.string.FileDeleteLabel);
+            
+            O365FileModel itemToRemove = mApplication
+                    .getFileAdapterList()
+                    .getItem(mApplication
+                            .getFileListViewState()
+                            .getSelectedItem());
+            
+            arguments.putString("MessageString", "Delete " + itemToRemove.getName() + "?");
             mDeleteDialog = new DeleteDialogFragment();
             mDeleteDialog.setArguments(arguments);
             mDeleteDialog.show(getFragmentManager(), "Delete this file?");
@@ -283,7 +285,6 @@ public class FilesActivity extends Activity implements BaseDialogListener,
     public void onOperationComplete(final OperationResult opResult) {
         this.runOnUiThread(new Runnable() {
 
-            @SuppressWarnings("unchecked")
             @Override
             public void run() {
                 if (mDialog.isShowing())

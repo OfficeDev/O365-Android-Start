@@ -86,7 +86,7 @@ The details of configuring the Android starter project depend on your current de
 9.  Download the latest version of the [gson library](https://code.google.com/p/google-gson/).
 10. Add the gson jar file to the libs folder of the AuthenticationActivity project.
 11. Download or clone the
-   [Office 365 Starter Project for Android](http://aka.ms/o365-apis-start-android).
+   [Office 365 Starter Project for Android](https://github.com/OfficeDev/O365-Android-Start).
 12. Import the starter project into your Eclipse workspace.
 13. Download the latest [guava library](http://code.google.com/p/guava-libraries/).
 14. Add the guava jar file to the libs folder of the o365-android-start project.

@@ -8,7 +8,7 @@
         android:id="@+id/CalendarStarterTextWebView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="2dp"
         android:gravity="center"
         android:scrollbars="none"
         android:text="@string/calendar_view_intro" />
@@ -58,7 +58,7 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="5dp"
-                android:onClick="getEvents_OnClick"
+                android:onClick="onClickGetEventsButton"
                 android:text="@string/button_calendarGetEvents" />
 
             <Button
@@ -70,7 +70,7 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="5dp"
-                android:onClick="newEvent_OnClick"
+                android:onClick="onClickNewEventButton"
                 android:text="@string/button_calendarCreateEvent" />
 
             <Button
@@ -82,7 +82,7 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="5dp"
-                android:onClick="update_OnClick"
+                android:onClick="onClickEditButton"
                 android:text="@string/button_calendarUpdateEvent" />
 
             <Button
@@ -94,7 +94,7 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="5dp"
-                android:onClick="delete_OnClick"
+                android:onClick="onDeleteButtonClick"
                 android:text="@string/button_calendarDeleteEvent" />
         </LinearLayout>
 

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <!--
@@ -5,8 +6,9 @@
     two-pane version on Large screens.
 
     For more on layout aliases, see:
-    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     -->
     <item name="activity_calendarevent_list" type="layout">@layout/activity_calendarevent_twopane</item>
+    <item name="activity_file_list" type="layout">@layout/activity_file_twopane</item>
 
 </resources>

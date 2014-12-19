@@ -11,7 +11,7 @@ import com.microsoft.office365.starter.interfaces.OnEventsAddedListener;
 import com.microsoft.office365.starter.interfaces.OnOperationCompleteListener;
 import com.microsoft.office365.starter.models.O365CalendarModel;
 import com.microsoft.office365.starter.models.O365CalendarModel.O365Calendar_Event;
-import com.microsoft.office365.starter.views.CalendarEventListActivity;
+
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -61,8 +61,7 @@ public class CalendarEventListActivity extends Activity implements
     public O365CalendarModel mCalendarModel;
     private android.app.FragmentManager mFragmentManager;
     private CalendarEventListActivity mParentActivity;
-    private DeleteDialogFragment mDeleteDialog;
-    private CalendarEventFragmentUpdate mUpdateDialog;
+    private DeleteDialogFragment mDeleteFragment;
 
     /**
      * The dummy content this fragment is presenting.
@@ -70,7 +69,6 @@ public class CalendarEventListActivity extends Activity implements
     private O365CalendarModel.O365Calendar_Event mItem;
 
     /** The m stored rotation. */
-    private int mStoredRotation;
     private ProgressDialog mDialog;
     private O365APIsStart_Application mApplication;
 
@@ -84,35 +82,49 @@ public class CalendarEventListActivity extends Activity implements
         mCalendarModel = mApplication.getCalendarModel();
         mParentActivity = this;
 
+        this.setTitle(R.string.mainButton_Calendar);
         if (mCalendarModel == null)
             mCalendarModel = new O365CalendarModel(this);
 
+        mCalendarModel.setActivity(this);
+
+        mApplication.setCalendarModel(mCalendarModel);
+
         calendarEvents = mCalendarModel.getCalendar();
 
+        // Load the calendar list activity
         setContentView(R.layout.activity_calendarevent_list);
         if (findViewById(R.id.calendarevent_detail_container) != null) {
             mTwoPane = true;
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            eventListFragment = (CalendarEventListFragment) getFragmentManager()
-                    .findFragmentById(R.id.calendarevent_list);
-            eventListFragment.setActivateOnItemClick(true);
 
-            CalendarEventListFragment calenderListFragment = (CalendarEventListFragment) getFragmentManager()
-                    .findFragmentById(R.id.calendarevent_list);
-
-            // create new adapter and initialize with empty events collection
-            mListAdapter = new ArrayAdapter<O365CalendarModel.O365Calendar_Event>(
-                    CalendarEventListActivity.this,
-                    android.R.layout.simple_list_item_activated_1,
-                    android.R.id.text1, calendarEvents.ITEMS);
-            calenderListFragment.setListAdapter(mListAdapter);
-            calenderListFragment
-                    .getListView()
-                    .setBackgroundColor(getResources()
-                            .getColor(R.color.ListBackground));
         }
+        else
+        {
+            // inflate small screen view
+        }
+        eventListFragment = (CalendarEventListFragment) getFragmentManager()
+                .findFragmentById(R.id.calendarevent_list);
+        eventListFragment.setActivateOnItemClick(true);
+
+        CalendarEventListFragment calenderListFragment = (CalendarEventListFragment) getFragmentManager()
+                .findFragmentById(R.id.calendarevent_list);
+
+        // create new adapter and initialize with empty events collection
+        mListAdapter = new ArrayAdapter<O365CalendarModel.O365Calendar_Event>(
+                CalendarEventListActivity.this,
+                android.R.layout.simple_list_item_activated_1,
+                android.R.id.text1, calendarEvents.ITEMS);
+        calenderListFragment.setListAdapter(mListAdapter);
+
+        calenderListFragment
+                .getListView()
+                .setBackgroundColor(getResources()
+                        .getColor(R.color.ListBackground));
+
+       // calenderListFragment.getListView().SETSCR
         if (mApplication.getCalendarModel() != null && mApplication
                 .getCalendarModel()
                 .getCalendar()
@@ -124,6 +136,10 @@ public class CalendarEventListActivity extends Activity implements
                     android.R.layout.simple_list_item_activated_1,
                     android.R.id.text1, mApplication.getCalendarModel().getCalendar().ITEMS);
             calendarEventListFragment.setListAdapter(mListAdapter);
+        }
+        else
+        {
+            helperGetEventList();
         }
         mFragmentManager = getFragmentManager();
 
@@ -137,6 +153,21 @@ public class CalendarEventListActivity extends Activity implements
             introView.loadData(introHTML, "text/html", "UTF-8");
             introView.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        // Reload the event list when the activity resumes
+        // only if the list is not currently being loaded from the onCreated callback
+        if (mDialog != null && !mDialog.isShowing())
+        {
+            helperGetEventList();
+        }
+        if (mTwoPane)
+            helperEnableActionButtons();
     }
 
     @Override
@@ -154,15 +185,16 @@ public class CalendarEventListActivity extends Activity implements
         if (id == null)
             return;
         this.selectedEventId = id;
+
         if (mTwoPane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
-            getSelectedItem(id);
+            actionGetSelectedItem(id);
         }
     }
 
-    private void getSelectedItem(String id)
+    private void actionGetSelectedItem(String id)
     {
         Bundle arguments = new Bundle();
         arguments.putString(CalendarEventDetailFragment.ARG_ITEM_ID, this.selectedEventId);
@@ -175,27 +207,15 @@ public class CalendarEventListActivity extends Activity implements
     }
 
     // Delete the selected event
-    public void delete_OnClick(View view)
+    public void onDeleteButtonClick(View view)
     {
-        if (this.selectedEventId.length() == 0)
-        {
-            Toast.makeText(CalendarEventListActivity.this, "Select an event to delete",
-                    Toast.LENGTH_LONG).show();
-
-            return;
-        }
-        O365Calendar_Event event = calendarEvents.ITEM_MAP.get(this.selectedEventId);
-        Bundle arguments = new Bundle();
-        arguments.putString("MessageString", "Delete " + event.getSubject() + "?");
-        mDeleteDialog = new DeleteDialogFragment();
-        mDeleteDialog.setArguments(arguments);
-        mDeleteDialog.show(mFragmentManager, "Delete this event?");
+        actionRemoveEvent(view);
     }
 
     // Fill the list with calendar events
-    public void getEvents_OnClick(View view)
+    public void onClickGetEventsButton(View view)
     {
-        getEventList();
+        helperGetEventList();
     }
 
     @Override
@@ -203,29 +223,75 @@ public class CalendarEventListActivity extends Activity implements
         // Handle presses on the action bar items
         switch (item.getItemId()) {
 
+            case R.id.event_create:
+                actionCreateNewEvent();
+                break;
+            case R.id.event_edit:
+                actionEditEvent(null);
+                break;
+            case R.id.event_remove:
+                actionRemoveEvent(null);
+                break;
+            case R.id.event_refresh:
+                helperGetEventList();
+                break;
             default:
-                return super.onOptionsItemSelected(item);
+                break;
+
         }
+        return super.onOptionsItemSelected(item);
     }
 
-    public void update_OnClick(View view)
+    public void onClickEditButton(View view)
     {
         if (this.selectedEventId.length() == 0)
             return;
 
+        actionEditEvent(view);
+    }
+
+    private void actionRemoveEvent(View view)
+    {
+        if (this.selectedEventId.length() == 0)
+        {
+            Toast.makeText(CalendarEventListActivity.this, "Select an event to delete",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        O365Calendar_Event event = calendarEvents.ITEM_MAP.get(this.selectedEventId);
+        if (event == null)
+        {
+            Toast.makeText(CalendarEventListActivity.this, "Null event selected",
+                    Toast.LENGTH_LONG).show();
+            return;
+
+        }
+        Bundle arguments = new Bundle();
+        arguments.putString("MessageString", "Delete " + event.getSubject() + "?");
+        mDeleteFragment = new DeleteDialogFragment();
+        mDeleteFragment.setArguments(arguments);
+        mDeleteFragment.show(mFragmentManager, "Delete this event?");
+
+    }
+
+    private void actionEditEvent(View view)
+    {
+        if (this.selectedEventId.length() == 0)
+        {
+            Toast.makeText(CalendarEventListActivity.this, "Select an event to update",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
         if (mTwoPane == true)
         {
-            // Disable action buttons until create event action is complete
-            Button updateButton = (Button) view;
-            updateButton.setClickable(false);
-            Button actionButton = (Button) mParentActivity
-                    .findViewById(R.id.button_calendarCreateEvent);
-            actionButton.setClickable(false);
+            helperDisableActionMenuItems();
+            helperDisableActionButtons();
 
             Bundle arguments = new Bundle();
             arguments.putString(CalendarEventDetailFragment.ARG_ITEM_ID, this.selectedEventId);
-            CalendarEventFragmentUpdate updateFragment = new CalendarEventFragmentUpdate();
-            mUpdateDialog = updateFragment;
+            CalendarEventFragmentView updateFragment = new CalendarEventFragmentView();
             updateFragment.setArguments(arguments);
             android.app.FragmentTransaction ft = mFragmentManager.beginTransaction();
             ft.replace(R.id.calendarevent_detail_container, updateFragment, "updateFragment");
@@ -237,38 +303,34 @@ public class CalendarEventListActivity extends Activity implements
         {
             Intent detailIntent = new Intent(this,
                     CalendarEventDetailActivity.class);
-            detailIntent.putExtra(
-                    CalendarEventDetailActivity.ARG_ACTION,
-                    CalendarEventDetailActivity.formAction.update.name());
-            detailIntent.putExtra(
-                    CalendarEventDetailFragment.ARG_ITEM_ID,
-                    this.selectedEventId);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("calendarModel", mCalendarModel);
+            bundle.putString(CalendarEventDetailFragment.ARG_ITEM_ID, this.selectedEventId);
+            detailIntent.putExtras(bundle);
+            detailIntent.setAction(Intent.ACTION_EDIT);
             startActivity(detailIntent);
         }
         // Need code that reacts to popping update fragment of of stack. The
         // required code would reload the view to show the updated fragment details.
+
     }
 
     // Create new calendar event
-    public void newEvent_OnClick(View view)
+    public void onClickNewEventButton(View view)
     {
-        createNewEvent();
+        actionCreateNewEvent();
     }
 
     // Opens create event fragment and swaps with current event detail fragment
-    private void createNewEvent()
+    private void actionCreateNewEvent()
     {
         if (mTwoPane == true)
         {
-            // Disable action buttons until create event action is complete
-            Button actionButton = (Button) mParentActivity
-                    .findViewById(R.id.button_calendarUpdateEvent);
-            actionButton.setClickable(false);
-            actionButton = (Button) mParentActivity.findViewById(R.id.button_calendarCreateEvent);
-            actionButton.setClickable(false);
 
-            CalendarEventFragmentCreate createFragment = new CalendarEventFragmentCreate();
+            helperDisableActionButtons();
+            helperDisableActionMenuItems();
 
+            CalendarEventFragmentView createFragment = new CalendarEventFragmentView();
             android.app.FragmentTransaction ft = mFragmentManager.beginTransaction();
             ft.replace(R.id.calendarevent_detail_container, createFragment, "createFragment");
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -277,17 +339,23 @@ public class CalendarEventListActivity extends Activity implements
         }
         else
         {
+
             Intent detailIntent = new Intent(this,
                     CalendarEventDetailActivity.class);
-            detailIntent.putExtra(
-                    CalendarEventDetailActivity.ARG_ACTION,
-                    CalendarEventDetailActivity.formAction.create.name());
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("calendarModel", mCalendarModel);
+            detailIntent.putExtras(bundle);
+            detailIntent.setAction(Intent.ACTION_INSERT);
             startActivity(detailIntent);
         }
     }
 
     @Override
-    public void onBackStackChanged() {
+    public void onBackStackChanged()
+    {
+        if (mTwoPane)
+            helperEnableActionButtons();
+
     }
 
     @Override
@@ -301,39 +369,32 @@ public class CalendarEventListActivity extends Activity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.calendar_small_list, menu);
+        getMenuInflater().inflate(R.menu.calendar_menu, menu);
         return true;
     }
 
     // Callback called by update and delete fragments when user clicks the
-    // Done button on the fragments
+    // Done button on the fragments. This callback method is used in large screen
+    // device mode only.
+    // For small screens, events are posted to the Exchange service from the
+    // CalendarEventDetailActivity class.
     @Override
     public void onDialogPositiveClick(Fragment dialog) {
 
-        if (dialog == mDeleteDialog)
+        if (dialog == mDeleteFragment)
         {
+
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
             mParentActivity = this;
             mDialog = new ProgressDialog(this);
             mDialog.setTitle("Removing an event...");
             mDialog.setMessage("Please wait.");
-            mDialog.setCancelable(false);
+            mDialog.setCancelable(true);
             mDialog.setIndeterminate(true);
             mDialog.show();
             mCalendarModel.setEventOperationCompleteListener(this);
             mItem = mCalendarModel.getCalendar().ITEM_MAP.get(this.selectedEventId);
             mCalendarModel.postDeletedEvent(this, mItem);
-        }
-        else if (dialog == mUpdateDialog)
-        {
-            mDialog = new ProgressDialog(this);
-            mDialog.setTitle("Updating an event...");
-            mDialog.setMessage("Please wait.");
-            mDialog.setCancelable(false);
-            mDialog.setIndeterminate(true);
-            mDialog.show();
-            mItem = mCalendarModel.getCalendar().ITEM_MAP.get(this.selectedEventId);
-            mCalendarModel.setEventOperationCompleteListener(this);
-            mCalendarModel.postUpdatedEvent(this, mItem);
         }
     }
 
@@ -341,35 +402,116 @@ public class CalendarEventListActivity extends Activity implements
     @Override
     public void onDialogNegativeClick(Fragment dialog)
     {
+
+        // In small screen layout, the update actionButton is not loaded
+        if (mTwoPane)
+        {
+            this.getFragmentManager()
+                    .popBackStack();
+            actionGetSelectedItem(selectedEventId);
+            helperEnableActionButtons();
+        }
+        helperEnableActionMenuItems();
+    }
+
+    public void helperEnableActionMenuItems()
+    {
+        View eventMenuItem = mParentActivity.findViewById(R.id.event_create);
+        eventMenuItem.setClickable(true);
+        eventMenuItem.setEnabled(true);
+        eventMenuItem = mParentActivity.findViewById(R.id.event_remove);
+        eventMenuItem.setClickable(true);
+        eventMenuItem.setEnabled(true);
+        eventMenuItem = mParentActivity.findViewById(R.id.event_edit);
+        eventMenuItem.setClickable(true);
+        eventMenuItem.setEnabled(true);
+        eventMenuItem = mParentActivity.findViewById(R.id.event_refresh);
+        eventMenuItem.setClickable(true);
+        eventMenuItem.setEnabled(true);
+
+    }
+
+    public void helperEnableActionButtons()
+    {
         // Restore click event in the action buttons
-        Button actionButton = (Button) mParentActivity
+        Button actionButton = (Button) CalendarEventListActivity.this
                 .findViewById(R.id.button_calendarUpdateEvent);
         actionButton.setClickable(true);
-        actionButton = (Button) mParentActivity.findViewById(R.id.button_calendarCreateEvent);
+
+        actionButton = (Button) CalendarEventListActivity.this
+                .findViewById(R.id.button_calendarCreateEvent);
         actionButton.setClickable(true);
+
+        // Enable delete button
+        actionButton = (Button) mParentActivity
+                .findViewById(R.id.button_calendarDeleteEvent);
+        actionButton.setClickable(true);
+
+        Button refreshButton = (Button) mParentActivity
+                .findViewById(R.id.button_calendarGetEvents);
+        refreshButton.setClickable(true);
+    }
+
+    public void helperDisableActionMenuItems()
+    {
+        View eventMenuItem = mParentActivity.findViewById(R.id.event_create);
+        eventMenuItem.setClickable(false);
+        eventMenuItem.setEnabled(false);
+        eventMenuItem = mParentActivity.findViewById(R.id.event_remove);
+        eventMenuItem.setClickable(false);
+        eventMenuItem.setEnabled(false);
+        eventMenuItem = mParentActivity.findViewById(R.id.event_edit);
+        eventMenuItem.setClickable(false);
+        eventMenuItem.setEnabled(false);
+        eventMenuItem = mParentActivity.findViewById(R.id.event_refresh);
+        eventMenuItem.setClickable(false);
+        eventMenuItem.setEnabled(false);
+
+    }
+
+    public void helperDisableActionButtons()
+    {
+        // Disable action buttons until create event action is complete
+        Button actionButton = (Button) mParentActivity
+                .findViewById(R.id.button_calendarUpdateEvent);
+        actionButton.setClickable(false);
+
+        actionButton = (Button) mParentActivity
+                .findViewById(R.id.button_calendarCreateEvent);
+        actionButton.setClickable(false);
+
+        // Disable action buttons until create event action is complete
+        Button deleteButton = (Button) mParentActivity
+                .findViewById(R.id.button_calendarDeleteEvent);
+        deleteButton.setClickable(false);
+
+        Button refreshButton = (Button) mParentActivity
+                .findViewById(R.id.button_calendarGetEvents);
+        refreshButton.setClickable(false);
     }
 
     // Called when the user click the Get Events button on this activity
-    public void getEventList()
+    public void helperGetEventList()
     {
         mDialog = new ProgressDialog(mParentActivity);
         mDialog.setTitle("Retrieving Events...");
         mDialog.setMessage("Please wait.");
-        mDialog.setCancelable(false);
+        mDialog.setCancelable(true);
         mDialog.setIndeterminate(true);
         mDialog.show();
 
         // Register a callback on the event model to be called
         // when events are retrieved from Outlook service
         mCalendarModel.setEventSelectionListener(this);
-        mCalendarModel.getEventList();
+        
+        //Set the event page size to 11, and start paging at first event 
+        mCalendarModel.getEventList(11, 0);
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState)
     {
         // Save user's current state
-        // savedInstanceState.put
         mApplication.setCalendarModel(mCalendarModel);
     }
 
@@ -384,11 +526,12 @@ public class CalendarEventListActivity extends Activity implements
                         .findFragmentById(R.id.calendarevent_list);
                 if (!eventCollection.getEventCollection().isEmpty())
                 {
-                    //Not necessary to check the ArrayAdapter type because the type is always set as cast in the
-                    //following code
+                    // Not necessary to check the ArrayAdapter type because the type is always set
+                    // as cast in the
+                    // following code
                     ((ArrayAdapter<O365CalendarModel.O365Calendar_Event>) calendarListFragment
                             .getListAdapter())
-                            .notifyDataSetChanged();                    
+                            .notifyDataSetChanged();
 
                     calendarListFragment.getListView().setVisibility(View.VISIBLE);
                     calendarListFragment.setListAdapter(mListAdapter);
@@ -396,7 +539,6 @@ public class CalendarEventListActivity extends Activity implements
                     if (mDialog.isShowing())
                     {
                         mDialog.dismiss();
-                        mParentActivity.setRequestedOrientation(mStoredRotation);
                     }
                     Toast.makeText(CalendarEventListActivity.this, "Events loaded",
                             Toast.LENGTH_LONG).show();
@@ -408,7 +550,6 @@ public class CalendarEventListActivity extends Activity implements
                     if (mDialog.isShowing())
                     {
                         mDialog.dismiss();
-                        mParentActivity.setRequestedOrientation(mStoredRotation);
                     }
                     Toast.makeText(CalendarEventListActivity.this, "No events to show",
                             Toast.LENGTH_LONG).show();
@@ -425,79 +566,139 @@ public class CalendarEventListActivity extends Activity implements
             @SuppressWarnings("unchecked")
             @Override
             public void run() {
+
+                
+                //Close progress dialog and unlock device orientation changes
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
                 if (mDialog.isShowing())
                 {
                     mDialog.dismiss();
-                    CalendarEventListActivity.this.setRequestedOrientation(mStoredRotation);
                 }
 
+                //Inform user via toast about the results of the operation
                 Toast.makeText(CalendarEventListActivity.this, opResult.getOperationResult(),
                         Toast.LENGTH_LONG).show();
                 CalendarEventListFragment calenderListFragment = (CalendarEventListFragment) getFragmentManager()
                         .findFragmentById(R.id.calendarevent_list);
 
+                //Notify the list adaptor that the underlying event list has changed
                 ((ArrayAdapter<O365CalendarModel.O365Calendar_Event>) calenderListFragment
                         .getListAdapter())
                         .notifyDataSetChanged();
-                
-                if (((ArrayAdapter<O365CalendarModel.O365Calendar_Event>) calenderListFragment
-                        .getListAdapter()).isEmpty() == false)
-                {
-                    getSelectedItem(opResult.getId());
-                    CalendarEventListActivity.this.selectedEventId="";
 
+                //Update the detail fragment with the results of the operation
+                if (!opResult.getOperation().contains("Remove event"))
+                {
+                    //Get the event that was added or changed and then load its details in the right pane
+                    //of the activity
+                    if (((ArrayAdapter<O365CalendarModel.O365Calendar_Event>) calenderListFragment
+                            .getListAdapter()).isEmpty() == false)
+                    {
+                        String resultId = opResult.getId();
+                        
+                        //result of -1 indicates an operation failure
+                        if (!resultId.contains("-1"))
+                        {
+                            CalendarEventListActivity.this.selectedEventId = resultId;
+                            actionGetSelectedItem(resultId);
+                        }
+                    }
+                }
+                else
+                {
+                    //If remove event operation, select first event in the list and show its details
+                    //or clear the right pane of the activity if there are no events in the list
+                    CalendarEventListActivity.this.selectedEventId = "";
+                    // In small screen layout, the detail fragments are not loaded into the list
+                    // activity
+                    if (mTwoPane)
+                    {
+                        // Close the update fragment, get the first item in the event list, and display details
+                        mFragmentManager.popBackStack();
+                        
+                        ArrayAdapter<O365CalendarModel.O365Calendar_Event> eventList = (ArrayAdapter<O365CalendarModel.O365Calendar_Event>) calenderListFragment
+                        .getListAdapter();
+                        if (eventList.getCount() > 0)
+                            CalendarEventListActivity.this.selectedEventId =  eventList.getItem(0).getID();
+                        
+                        //If list is empty, selected event Id will have length of zero
+                        if (selectedEventId.length() > 0)
+                            actionGetSelectedItem(selectedEventId);
+                        else
+                            mFragmentManager.beginTransaction()
+                            .remove(detailFragment)
+                            .commit();
+                    }
                 }
 
-                // Restore click event in the action buttons
-                Button actionButton = (Button) CalendarEventListActivity.this
-                        .findViewById(R.id.button_calendarUpdateEvent);
-                actionButton.setClickable(true);
-                actionButton = (Button) CalendarEventListActivity.this
-                        .findViewById(R.id.button_calendarCreateEvent);
-                actionButton.setClickable(true);
+                // In small screen layout, the update actionButton is not loaded
+                if (mTwoPane)
+                {
+                    helperEnableActionButtons();
+                }
+                helperEnableActionMenuItems();
+
+                // figure out if user added an event and call this method if they did
+                if (opResult.getOperation().equals("Add event"))
+                    helperGetEventList();
             }
         });
     }
 
     @Override
-    public void onDialogPositiveClick(Fragment dialog, O365Calendar_Event newItem) {
+    public void onDialogPositiveClick(Fragment dialog, O365Calendar_Event editedEvent,
+            boolean newItemFlag) {
+        this.getFragmentManager()
+                .popBackStack();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+
         mDialog = new ProgressDialog(this);
-        mDialog.setTitle("Adding an event...");
+        if (newItemFlag)
+            mDialog.setTitle("Adding an event...");
+        else
+            mDialog.setTitle("Updating an event...");
         mDialog.setMessage("Please wait.");
-        mDialog.setCancelable(false);
+        mDialog.setCancelable(true);
         mDialog.setIndeterminate(true);
         mDialog.show();
 
         // Register callback with the model for notification of op complete
         mCalendarModel.setEventOperationCompleteListener(this);
-        mCalendarModel.postCreatedEvent(this, newItem);
+        if (newItemFlag)
+            mCalendarModel.postCreatedEvent(this, editedEvent);
+        else
+            mCalendarModel.postUpdatedEvent(this, editedEvent);
+
+        // Close the update fragment and return to the previous view fragment
+        this.getFragmentManager()
+                .popBackStack();
     }
 }
-//*********************************************************
+// *********************************************************
 //
-//O365-Android-Start, https://github.com/OfficeDev/O365-Android-Start
+// O365-Android-Start, https://github.com/OfficeDev/O365-Android-Start
 //
-//Copyright (c) Microsoft Corporation
-//All rights reserved.
+// Copyright (c) Microsoft Corporation
+// All rights reserved.
 //
-//MIT License:
-//Permission is hereby granted, free of charge, to any person obtaining
-//a copy of this software and associated documentation files (the
-//"Software"), to deal in the Software without restriction, including
-//without limitation the rights to use, copy, modify, merge, publish,
-//distribute, sublicense, and/or sell copies of the Software, and to
-//permit persons to whom the Software is furnished to do so, subject to
-//the following conditions: 
+// MIT License:
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
 //
-//The above copyright notice and this permission notice shall be
-//included in all copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
 //
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-//*********************************************************
+// *********************************************************

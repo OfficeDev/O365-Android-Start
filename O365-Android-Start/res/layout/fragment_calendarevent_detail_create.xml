@@ -12,9 +12,10 @@
 
         <TextView
             android:id="@+id/CalendarDetailFragmentTitle"
-            style="@style/HeaderTheme"
+            style="@style/HeaderThemeSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
             android:text="@string/Calendar_CreateEventDetails" >
         </TextView>
 
@@ -36,6 +37,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
                         android:text="Subject" />
 
                     <EditText
@@ -56,6 +58,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingLeft="10dp"
                         android:text="Location" />
 
                     <EditText
@@ -74,7 +77,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Attendees (email address)" />
+                        android:paddingLeft="10dp"
+                        android:text="Attendees" />
 
                     <EditText
                         android:id="@+id/attendeesText"
@@ -82,10 +86,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
+                        android:hint="@+string/Calendar_EventCreateEmailHint"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:singleLine="true" 
-                        android:hint="@+string/Calendar_EventCreateEmailHint"/>
+                        android:singleLine="true" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -97,24 +101,66 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
                     android:text="Start" />
 
-                <DatePicker
-                    android:id="@+id/StartDatePicker"
+                <Spinner
+                    android:id="@+id/StartMonth_Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:calendarViewShown="false"
-                    android:endYear="2020"
-                    android:foregroundGravity="center"
-                    android:minDate="01/01/2014"
-                    android:spinnersShown="true" />
+                    android:text="/" />
 
-                <TimePicker
-                    android:id="@+id/startTimePicker"
+                <Spinner
+                    android:id="@+id/StartDay_Spinner"
                     android:layout_width="wrap_content"
-                    android:layout_height="210dp"
-                    android:foregroundGravity="center" />
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="/" />
+
+                <Spinner
+                    android:id="@+id/StartYear_Spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="44dp"
+            android:orientation="horizontal" >
+
+            <Spinner
+                android:id="@+id/Hour_Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":" />
+
+            <Spinner
+                android:id="@+id/Minute_Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" " />
+
+            <Spinner
+                android:id="@+id/Meridan_Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -125,24 +171,65 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
                 android:text="End" />
 
-            <DatePicker
-                android:id="@+id/EndDatePicker"
-                style="@dimen/activity_horizontal_margin"
+            <Spinner
+                android:id="@+id/endMonth_Spinner"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:calendarViewShown="false"
-                android:foregroundGravity="center"
-                android:spinnersShown="true" />
+                android:layout_height="wrap_content" />
 
-            <TimePicker
-                android:id="@+id/endTimePicker"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/StartDatePicker"
-                android:layout_toRightOf="@+id/EndDatePicker"
-                android:foregroundGravity="center" />
+                android:text="/" />
+
+            <Spinner
+                android:id="@+id/endDay_Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/" />
+
+            <Spinner
+                android:id="@+id/endYear_Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="44dp"
+            android:orientation="horizontal" >
+
+            <Spinner
+                android:id="@+id/EndHour_Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":" />
+
+            <Spinner
+                android:id="@+id/EndMinute_Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" " />
+
+            <Spinner
+                android:id="@+id/EndMeridan_Spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout

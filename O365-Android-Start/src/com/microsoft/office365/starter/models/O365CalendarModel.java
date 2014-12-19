@@ -6,6 +6,8 @@ package com.microsoft.office365.starter.models;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
@@ -37,22 +41,34 @@ import com.microsoft.office365.starter.interfaces.OnEventsAddedListener.setEvent
 import com.microsoft.office365.starter.interfaces.OnOperationCompleteListener.OperationResult;
 
 /**
-* This model class encapsulates all of the Outlook service API calendar operations that create
-* read, update, and delete calendar events. The O365CalendarModel class contains several methods
-* that post changes made to the calendar event (com.microsoft.office365.OutlookServices.Event) in
-* the local cache. The CalendarEvents class exposes a list and hash table to be consumed by an
-* arrayAdapter on the UI calendar event list The O365Calendar_Event class encapsulates
-* com.microsoft.office365.OutlookServices.Event and exposes event properties as simple strings that
-* the UI fragments consume.
-*/
-public class O365CalendarModel {
+ * This model class encapsulates all of the Outlook service API calendar operations that create
+ * read, update, and delete calendar events. The O365CalendarModel class contains several methods
+ * that post changes made to the calendar event (com.microsoft.office365.OutlookServices.Event) in
+ * the local cache. The CalendarEvents class exposes a list and hash table to be consumed by an
+ * arrayAdapter on the UI calendar event list The O365Calendar_Event class encapsulates
+ * com.microsoft.office365.OutlookServices.Event and exposes event properties as simple strings that
+ * the UI fragments consume.
+ */
+public class O365CalendarModel implements Parcelable {
 
     private CalendarEvents mCalendarEvents;
     private O365APIsStart_Application mApplication;
     private OnEventsAddedListener mEventSelectionListener;
     private OnOperationCompleteListener mEventOperationCompleteListener;
     private UUID tempNewEventId;
-    
+
+    public static final Parcelable.Creator<O365CalendarModel> CREATOR = new Parcelable.Creator<O365CalendarModel>() {
+        public O365CalendarModel createFromParcel(Parcel in)
+        {
+            return new O365CalendarModel(in);
+        }
+
+        @Override
+        public O365CalendarModel[] newArray(int size) {
+            return new O365CalendarModel[size];
+        }
+    };
+
     public void setEventSelectionListener(OnEventsAddedListener eventSelectionListener) {
         this.mEventSelectionListener = eventSelectionListener;
     }
@@ -72,22 +88,23 @@ public class O365CalendarModel {
     }
 
     // This overload is called when a user is creating a new event.
-    public O365CalendarModel.O365Calendar_Event createEvent( String subject)
+    public O365CalendarModel.O365Calendar_Event createEvent(String subject)
     {
-        //Create a temporary unique event Id for the new event. The 
-        //temporary Id is used by the ListView to uniquely id the new event
-        //when it is added to the local cache before posting to the Outlook service
+        // Create a temporary unique event Id for the new event. The
+        // temporary Id is used by the ListView to uniquely id the new event
+        // when it is added to the local cache before posting to the Outlook service
         UUID ID = java.util.UUID.randomUUID();
-        
-        //Cache the temp Id in the calendar model so the model can retrieve the
-        //Event out of the ITEMS_MAP map and update with the Id assigned by 
-        //Outlook service upon successful add
+
+        // Cache the temp Id in the calendar model so the model can retrieve the
+        // Event out of the ITEMS_MAP map and update with the Id assigned by
+        // Outlook service upon successful add
         tempNewEventId = ID;
 
         // The com.microsoft.office365.OutlookServices.Event is created
         // and cached in the event model
         Event newEvent = new Event();
-        O365CalendarModel.O365Calendar_Event newEventModel = new O365CalendarModel.O365Calendar_Event(subject, newEvent);
+        O365CalendarModel.O365Calendar_Event newEventModel = new O365CalendarModel.O365Calendar_Event(
+                subject, newEvent);
         newEventModel.setID(ID.toString());
         return newEventModel;
     }
@@ -104,6 +121,9 @@ public class O365CalendarModel {
     public void postUpdatedEvent(final Activity activity,
             final O365CalendarModel.O365Calendar_Event eventToUpdate)
     {
+        if (eventToUpdate == null)
+            return;
+
         Event event = eventToUpdate.getEvent();
 
         if (event.getEnd().before(event.getStart()))
@@ -135,6 +155,7 @@ public class O365CalendarModel {
                         , eventToUpdate.id);
 
                 eventToUpdate.thisEvent = result;
+                sortInDateTimeOrder(mCalendarEvents.ITEMS);
                 mEventOperationCompleteListener.onOperationComplete(opResult);
             }
 
@@ -155,7 +176,7 @@ public class O365CalendarModel {
 
     // Posts an event deletion
     @SuppressWarnings("unchecked")
-    public void postDeletedEvent(final Activity activity,
+    public ListenableFuture<Event> postDeletedEvent(final Activity activity,
             final O365CalendarModel.O365Calendar_Event eventToDelete)
     {
         if (eventToDelete == null)
@@ -166,7 +187,7 @@ public class O365CalendarModel {
                     , "-1");
 
             mEventOperationCompleteListener.onOperationComplete(opResult);
-            return;
+            return null;
         }
         String eventId = eventToDelete.getEvent().getId();
         ListenableFuture<Event> deletedEvent = mApplication.getCalendarClient()
@@ -188,7 +209,7 @@ public class O365CalendarModel {
                         "Remove event"
                         , "Removed event"
                         , eventToDelete.id);
-
+                sortInDateTimeOrder(mCalendarEvents.ITEMS);
                 mEventOperationCompleteListener.onOperationComplete(opResult);
             }
 
@@ -204,6 +225,7 @@ public class O365CalendarModel {
                 mEventOperationCompleteListener.onOperationComplete(opResult);
             }
         });
+        return deletedEvent;
     }
 
     // Posts a new event
@@ -234,6 +256,7 @@ public class O365CalendarModel {
                     .getById(Constants.CALENDER_ID)
                     .getEvents().add(newEvent);
 
+            // addedEvent.
             Futures.addCallback(addedEvent, new FutureCallback<Event>()
             {
 
@@ -246,13 +269,14 @@ public class O365CalendarModel {
                             , result.getId());
 
                     eventToAdd.setEvent(result);
-                    
-                    //Update event collection.ITEM_MAP with updated Event.ID
+
+                    // Update event collection.ITEM_MAP with updated Event.ID
                     if (mCalendarEvents.ITEM_MAP.containsKey(tempNewEventId.toString()))
-                            mCalendarEvents.ITEM_MAP.remove(tempNewEventId.toString());
-                    
+                        mCalendarEvents.ITEM_MAP.remove(tempNewEventId.toString());
+
                     tempNewEventId = null;
-                    mCalendarEvents.ITEM_MAP.put(result.getId(),eventToAdd);
+                    mCalendarEvents.ITEM_MAP.put(result.getId(), eventToAdd);
+                    sortInDateTimeOrder(mCalendarEvents.ITEMS);
                     mEventOperationCompleteListener.onOperationComplete(opResult);
                 }
 
@@ -262,7 +286,7 @@ public class O365CalendarModel {
                     Log.e(t.getMessage(), "Create event");
                     OperationResult opResult = new OperationResult(
                             "Add event"
-                            , "Event was not added: " + getErrorMessage(t.getMessage())
+                            , "Error on add event: " + getErrorMessage(t.getMessage())
                             , "-1");
 
                     tempNewEventId = null;
@@ -277,24 +301,29 @@ public class O365CalendarModel {
 
             OperationResult opResult = new OperationResult(
                     "Add event"
-                    , "Event was not added"
+                    , "Error on add event - null pointer"
                     , "-1");
 
             mEventOperationCompleteListener.onOperationComplete(opResult);
         }
     }
 
-    public void getEventList()
+    //Get a set of calendar events, starting with the event at skipToEventNumber
+    //Size of calendar event set is set by pageSize
+    public void getEventList(int pageSize, int skipToEventNumber)
     {
         if (mCalendarEvents == null)
             mCalendarEvents = new CalendarEvents();
 
-        // retrieve primary calendar events asynchronously
+        // retrieve a page of primary calendar events asynchronously 
         ListenableFuture<List<Event>> results = mApplication.getCalendarClient()
                 .getMe()
                 .getCalendars().getById(Constants.CALENDER_ID)
                 .getEvents()
+                .top(pageSize)
+                .skip(skipToEventNumber)
                 .read();
+              
 
         Futures.addCallback(results, new FutureCallback<List<Event>>() {
 
@@ -302,14 +331,17 @@ public class O365CalendarModel {
             public void onSuccess(final List<Event> result)
             {
                 loadEventsIntoModel(result);
+                sortInDateTimeOrder(mCalendarEvents.ITEMS);
                 setEventCollection eventData = new setEventCollection(mCalendarEvents.ITEMS);
+
                 mEventSelectionListener.OnEventsAdded(eventData);
             }
 
             @Override
             public void onFailure(final Throwable t)
             {
-                Log.e("Failed to get events: " +  getErrorMessage(t.getMessage()), "O365CalendarModel.getEventList");
+                Log.e("Failed to get events: " + getErrorMessage(t.getMessage()),
+                        "O365CalendarModel.getEventList");
                 setEventCollection eventData = new setEventCollection(mCalendarEvents.ITEMS);
                 mEventSelectionListener.OnEventsAdded(eventData);
             }
@@ -317,20 +349,40 @@ public class O365CalendarModel {
         return;
     }
 
-    //Takes the string returned from Outlook service in the
-    //onFailure event, parses for the JSON object, and gets
-    //the actual error message
+    private void sortInDateTimeOrder(List<O365Calendar_Event> events)
+    {
+        // Sort returned events in ascending date/time order
+        Collections.sort(events, new Comparator<O365Calendar_Event>() {
+
+            @Override
+            public int compare(O365Calendar_Event event, O365Calendar_Event event2) {
+                if (event.thisEvent.getStart().getTime().getTime() < event2.thisEvent.getStart()
+                        .getTime().getTime())
+                    return -1;
+                else if (event.thisEvent.getStart().getTime().getTime() > event2.thisEvent
+                        .getStart().getTime().getTime())
+                    return 1;
+                else
+                    return 0;
+            }
+        });
+
+    }
+
+    // Takes the string returned from Outlook service in the
+    // onFailure event, parses for the JSON object, and gets
+    // the actual error message
     private String getErrorMessage(String result)
     {
         String errorMessage = "";
         try {
-            
-            //Gets the JSON object out of the result string
+
+            // Gets the JSON object out of the result string
             String responsejSON = result
-                    .substring(result.indexOf("{"),result.length()); 
-            
+                    .substring(result.indexOf("{"), result.length());
+
             JSONObject jObject = new JSONObject(responsejSON);
-            JSONObject error =  (JSONObject) jObject.get("error");
+            JSONObject error = (JSONObject) jObject.get("error");
             errorMessage = error.getString("message");
 
         } catch (JSONException e) {
@@ -339,7 +391,7 @@ public class O365CalendarModel {
         }
         return errorMessage;
     }
-    
+
     private void loadEventsIntoModel(List<Event> events)
     {
         try
@@ -389,6 +441,16 @@ public class O365CalendarModel {
         this.getCalendar().ITEM_MAP.put(item.id, item);
     }
 
+    public void setActivity(Activity activity)
+    {
+        mApplication = (O365APIsStart_Application) activity.getApplication();
+    }
+
+    public O365CalendarModel(Parcel in)
+    {
+
+    }
+
     public O365CalendarModel(Activity activity)
     {
         mApplication = (O365APIsStart_Application) activity.getApplication();
@@ -434,6 +496,7 @@ public class O365CalendarModel {
             thisEvent = event;
             this.id = event.getId();
         }
+
         // Updates the subject of the event
         public void updateSubject(String Subject)
         {
@@ -461,6 +524,7 @@ public class O365CalendarModel {
         {
             return this.id;
         }
+
         // Returns a comma delimited list of attendee
         // email addresses
         public String getAttendees()
@@ -502,56 +566,6 @@ public class O365CalendarModel {
         {
             id = newId;
         }
-        // Add new attendees to the existing list of event attendees
-        public void setAttendees(String anAttendee)
-        {
-            
-            Pattern pattern;
-            Matcher matcher;
-           
-             String EMAIL_PATTERN = 
-                    "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                    + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-             
-             pattern = Pattern.compile(EMAIL_PATTERN);
-            // If the event has no attendees, just add the new list.
-            if (thisEvent.getAttendees() == null || thisEvent.getAttendees().isEmpty())
-            {
-                String[] attendeeArray = anAttendee.split(";");
-                for (String attendeeString : attendeeArray)
-                {
-                    //Add attendee if attendeeString is an email address
-                    matcher = pattern.matcher(attendeeString);
-                    if (matcher.matches())
-                       makeAnAttendee(attendeeString.trim());
-                }
-            }
-            else
-            {
-                // iterate the array of attendee names from the user's list on the
-                // UI and compare each string with the existing attendee list. If
-                // the name is not in the list, add the new string as an invitee
-
-                // The comma delimited list of attendees from UI
-                String[] attendeeArray = anAttendee.trim().split(";");
-
-                // The existing attendee list from the event
-                List<Attendee> attendeeList = thisEvent.getAttendees();
-                checkRemoveAttendeFromList(anAttendee, attendeeList);
-
-                if (attendeeArray.length > 0)
-                {
-                    // Iterate on attendee array
-                    for (String attendeeString : attendeeArray)
-                    {
-                        //Add attendee if attendeeString is an email address
-                        matcher = pattern.matcher(attendeeString);
-                        if (matcher.matches())
-                            checkAddAttendeeToEvent(attendeeString, attendeeList);
-                    }
-                }
-            }
-        }
 
         // Add an attendee to the event attendee collection if it is not already there
         private void checkAddAttendeeToEvent(String attendeeToAdd, List<Attendee> attendeeList)
@@ -573,41 +587,30 @@ public class O365CalendarModel {
             }
         }
 
-        // Any names removed from the attendee list on the UI are removed from the attendee
-        // collection
-        // on the event.
-        private void checkRemoveAttendeFromList(String attendeeAddresses, List<Attendee> attendeeList)
+        // Add new attendees to the existing list of event attendees
+        public void setAttendees(String anAttendee)
         {
-            List<Attendee> attendeesToRemove = new ArrayList<Attendee>();
-
-            // Iterate on the Attendee collection in the Event and add Event objects
-            // to be removed from the Attendee collection
-            for (Attendee attendee : attendeeList)
+            if (thisEvent.getAttendees() != null)
             {
-                String attendeeAddress = attendee.getEmailAddress().getAddress();
-
-                //If the Attendee name is blank but the email address is filled and 
-                //formatted correctly
-                if (attendeeAddress == null)
-                    attendeeAddress = attendee.getEmailAddress().getAddress();
-                
-                // If the name of the attendee is not in the comma delimited
-                // list of attendee names from the UI then add to the
-                // to-be-removed collection
-                if (!attendeeAddresses.contains(attendeeAddress))
-                {
-                    attendeesToRemove.add(attendee);
-                }
+                thisEvent.getAttendees().clear();
             }
 
-            if (!attendeesToRemove.isEmpty())
-            {
-                for (Attendee attendeeToRemove : attendeesToRemove)
-                {
-                    thisEvent.getAttendees().remove(attendeeToRemove);
-                }
-            }
+            Pattern pattern;
+            Matcher matcher;
 
+            String EMAIL_PATTERN =
+                    "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+            pattern = Pattern.compile(EMAIL_PATTERN);
+
+            String[] attendeeArray = anAttendee.split(";");
+            for (String attendeeString : attendeeArray)
+            {
+                // Add attendee if attendeeString is an email address
+                matcher = pattern.matcher(attendeeString);
+                if (matcher.matches())
+                    makeAnAttendee(attendeeString.trim());
+            }
         }
 
         private void makeAnAttendee(String anAttendee)
@@ -618,6 +621,9 @@ public class O365CalendarModel {
             EmailAddress email = new EmailAddress();
             email.setAddress(anAttendee);
             attendee1.setEmailAddress(email);
+
+            // Get the current list of event attendees and add the new attendee
+            // to the list
             List<Attendee> listAttendees = thisEvent.getAttendees();
             if (listAttendees == null)
                 listAttendees = new ArrayList<Attendee>();
@@ -744,6 +750,8 @@ public class O365CalendarModel {
             return (thisEvent.getStart().get(Calendar.MONTH) + 1)
                     + "/"
                     + thisEvent.getStart().get(Calendar.DAY_OF_MONTH)
+                    + "/"
+                    + thisEvent.getStart().get(Calendar.YEAR)
                     + " "
                     + hourString
                     + ":"
@@ -753,32 +761,41 @@ public class O365CalendarModel {
                     + subject;
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel arg0, int arg1) {
+    }
 }
-//*********************************************************
+// *********************************************************
 //
-//O365-Android-Start, https://github.com/OfficeDev/O365-Android-Start
+// O365-Android-Start, https://github.com/OfficeDev/O365-Android-Start
 //
-//Copyright (c) Microsoft Corporation
-//All rights reserved.
+// Copyright (c) Microsoft Corporation
+// All rights reserved.
 //
-//MIT License:
-//Permission is hereby granted, free of charge, to any person obtaining
-//a copy of this software and associated documentation files (the
-//"Software"), to deal in the Software without restriction, including
-//without limitation the rights to use, copy, modify, merge, publish,
-//distribute, sublicense, and/or sell copies of the Software, and to
-//permit persons to whom the Software is furnished to do so, subject to
-//the following conditions: 
+// MIT License:
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
 //
-//The above copyright notice and this permission notice shall be
-//included in all copies or substantial portions of the Software.
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
 //
-//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-//*********************************************************
+// *********************************************************

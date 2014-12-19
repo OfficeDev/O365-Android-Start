@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.microsoft.office365.starter.CalendarSmallList" >
+
+    <item
+        android:id="@+id/event_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_refreshEvent"/>
+    <item
+        android:id="@+id/event_create"
+        android:icon="@drawable/ic_action_new_event"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_createEvent"/>
+    <item
+        android:id="@+id/event_remove"
+        android:icon="@drawable/ic_action_remove"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_deleteEvent"/>
+    <item
+        android:id="@+id/event_edit"
+        android:icon="@drawable/ic_action_edit"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:title="@string/action_UpdateEvent"/>
+
+</menu>

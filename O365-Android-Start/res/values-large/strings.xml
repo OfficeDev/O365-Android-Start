@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mainActivity_Readme">
+        		&lt;html&gt;&lt;head&gt;
+				&lt;style&gt;
+				body {color: white;}
+				a {color: #FFECE4}
+				&lt;/style&gt;
+				&lt;/head&gt;
+				&lt;body&gt;&lt;p&gt;This sample uses the &lt;b&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/office/dn605892(v=office.15).aspx"&gt;Office 365 preview API&lt;/a&gt;&lt;/b&gt; 
+                client libraries to illustrate basic operations against the Calendar and My Files service endpoints in Office 365. It also demonstrates how to authenticate against multiple Office 365 services in your app, and retrieve user information from the Users and Groups service.&lt;/p&gt;
+                &lt;p&gt;To run this sample:&lt;/p&gt;
+                &lt;ol&gt;
+                &lt;li&gt;Add a &lt;b&gt;native&lt;/b&gt; application to Azure Active Directory. Configure the following permissions to other applications:&lt;/li&gt;
+                &lt;ul&gt;
+                &lt;li&gt;(Office 365 SharePoint Online) &#045; Edit or delete users\' files (preview)&lt;/li&gt;
+                &lt;li&gt;(Office 365 Exchange Online) &#045; Have full access to users\' calendars (preview)&lt;/li&gt;
+                &lt;/ul&gt;
+                For more information, see &lt;b&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/azure/dn132599.aspx"&gt;Adding, Updating, and Removing an Application&lt;/a&gt;&lt;/b&gt;
+                &lt;li&gt;Take note of the client id and redirect uri values of the application in Azure Management Portal&lt;/li&gt;
+                &lt;li&gt;In this app, go to the &lt;b&gt;Preferences&lt;/b&gt; menu in the action bar and enter the client id and redirect uri of the application&lt;/li&gt;
+                &lt;li&gt;Click the sign in button in the action bar&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;p&gt;For more information, see &lt;b&gt;&lt;a href="http://aka.ms/o365-apis-start-android"&gt;Office 365 Starter Project Readme &lt;/a&gt;&lt;/b&gt;.&lt;/p&gt;
+                &lt;/body&gt;&lt;/html&gt;
+	</string>
+</resources>

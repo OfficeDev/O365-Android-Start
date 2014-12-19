@@ -1,22 +1,18 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-   <TextView 
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      style="@style/HeaderTheme"
-      android:text="@string/TodaysCalendarLabel" >
-	</TextView> 
-    
-<fragment 
-    android:id="@+id/calendarevent_list"
-    android:name="com.microsoft.office365.starter.views.CalendarEventListFragment"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    tools:context="com.microsoft.office365.starter.CalendarEventListActivity"
-    tools:layout="@android:layout/list_content" />
+    <fragment
+        android:id="@+id/calendarevent_list"
+        android:name="com.microsoft.office365.starter.views.CalendarEventListFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="20dp"
+        tools:context="com.microsoft.office365.starter.CalendarEventListActivity"
+        tools:layout="@android:layout/list_content" />
+
 </LinearLayout>

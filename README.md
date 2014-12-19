@@ -2,6 +2,7 @@
 
 **Table of contents**
 
+* [Change History](#history)
 * [Device requirements](#requirements)
 * [Setting up your environment](#setup)
 * [Running the starter project](#running)
@@ -12,7 +13,7 @@
 * [Questions and comments](#questions)
 * [Additional resources](#resources)
 
-There are millions of Office 365 users with data in the cloud; imagine building an Android app that gives your customers new and innovative ways to work with their files stored on OneDrive or their calendars stored in Office 365 Exchange. The Office 365 SDK starter project shows you how to use the **Office 365 SDK for Android** from [Microsoft Open Technologies, Inc (MS Open Tech)](http://msopentech.com) to integrate your users' Office 365 and OneDrive data into your app. You can use the starter project as a starting point for your own app; or you can just cut and paste the parts that you want to use.
+There are millions of Office 365 users with data in the cloud; imagine building an Android app that gives your customers new and innovative ways to work with their files stored on OneDrive for Business or their calendars stored in Office 365 Exchange. The Office 365 SDK starter project shows you how to use the **Office 365 SDK for Android** from [Microsoft Open Technologies, Inc (MS Open Tech)](http://msopentech.com) to integrate your users' Office 365 and OneDrive for Business data into your app. You can use the starter project as a starting point for your own app; or you can just cut and paste the parts that you want to use.
 
 The starter project shows you basic operations using the Files and Calendar service endpoints on Office 365. It also demonstrates how to authenticate with multiple Office 365 services in a single app. The starter project operations include:
 
@@ -23,7 +24,7 @@ The starter project shows you basic operations using the Files and Calendar serv
 * Update events.
 * Delete events.
 
-**OneDrive Files**
+**OneDrive for Business Files**
  
 * Get existing files and folders.
 * Create text files.
@@ -33,14 +34,20 @@ The starter project shows you basic operations using the Files and Calendar serv
 
 We'll be updating the starter project to add other services, such as Email, so make sure to check back.
 
+<a name="history">
+## Change History
+December 19, 2014:
+
+* Added smartphone layout support. The sample now runs on both tablets and smartphones in landscape or portrait mode.
+* Added paging of events to Calendar client.
+
 <a name="requirements">
 ## Device requirements
 To run the starter project your device needs to meet the following requirements:
-* A screen size of 7 inches or larger.
+
+* A screen size of 4 inches or larger.
 * Android API version 18 or later.
  
-Note: Currently this sample only supports landscape mode.
-
 <a name="setup"/>
 ## Setting up your environment
 
@@ -114,7 +121,7 @@ The details of configuring the Android starter project depend on your current de
 <a name="running"/>
 ## Running the starter project
 
-Once you've built the starter project you can run it on an emulator or device. Note that at this time it only runs for landscape mode on tablets.
+Once you've built the starter project you can run it on an emulator or device.
 
 1. Run the project.
 3. Click the "Sign in" button and enter your credentials.
@@ -138,14 +145,14 @@ The **Authentication** object  manages getting a token from ADAL and returning i
 
 The **O365CalendarModel** object wraps the API operations that create, update and delete calendar events in an Office 365 Exchange calendar. 
 
-The **getEventList()** method gets a list of events from the Office 365 calendar and loads the events into a local list. Changes, deletions, and additions to this list are posted asynchronously to the Office 365 calendar by the **postUpdatedEvent**, **postDeletedEvent**, and **postCreatedEvent** methods. 
+The **getEventList(int pageSize,int skipToEvent)** method gets a list of events from the Office 365 calendar and loads pages of events into a local list. Changes, deletions, and additions to this list are posted asynchronously to the Office 365 calendar by the **postUpdatedEvent**, **postDeletedEvent**, and **postCreatedEvent** methods. 
 
 <a name="files"/>
 ### Files API
 
-The **O365FileListModel** object wraps the API operations that create, update, and delete files stored on OneDrive.
+The **O365FileListModel** object wraps the API operations that create, update, and delete files stored on OneDrive for Business.
 
-The **getFilesAndFoldersFromService** method gets a list of all of the files and folders that are stored on OneDrive and loads the list into a local array. Changes, deletions, and additions to the local list of files are posted asynchronously to OneDrive by the **postUpdatedFileContents**, **postDeleteSectectedFileFromList**, and **postNewFileToServer** methods. 
+The **getFilesAndFoldersFromService** method gets a list of all of the files and folders that are stored on OneDrive for Business and loads the list into a local array. Changes, deletions, and additions to the local list of files are posted asynchronously to OneDrive for Business by the **postUpdatedFileContents**, **postDeleteSectectedFileFromList**, and **postNewFileToServer** methods. 
 
 The **getFileDetailsFromService** method returns an **O365FileModel** object containing the selected files contents.
 

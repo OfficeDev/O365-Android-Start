@@ -6,7 +6,7 @@
     <dimen name="main_readme_margin">4dp</dimen>
     
     <!--  Values for large screens for the main buttons fragment -->
-    <dimen name="main_buttons_width">576dp</dimen>
+    <dimen name="main_buttons_width">480dp</dimen>
     <dimen name="main_buttons_height">144dp</dimen>
     <dimen name="main_buttons_margin">4dp</dimen>
     <dimen name="main_buttons_padding">16dp</dimen>

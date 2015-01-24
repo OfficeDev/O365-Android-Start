@@ -1,0 +1,39 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "com.microsoft.office365.starter"
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+
+dependencies {
+    // base OData library:
+    compile group: 'com.microsoft.services', name: 'odata-engine-core', version: '0.11.1'
+    compile group: 'com.microsoft.services', name: 'odata-engine-android-impl', version: '0.11.1', ext:'aar'
+
+    // choose the outlook, discovery, and file services
+    compile group: 'com.microsoft.services', name: 'outlook-services', version: '0.11.1'
+    compile group: 'com.microsoft.services', name: 'discovery-services', version: '0.11.1'
+    compile group: 'com.microsoft.services', name: 'file-services', version: '0.11.1'
+
+    // Azure Active Directory Library
+    compile group: 'com.microsoft.aad', name: 'adal', version: '1.0.6'
+}

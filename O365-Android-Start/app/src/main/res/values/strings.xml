@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Office 365 Starter</string>
+    <string name="title_Home">Home</string>
+    <string name="title_section1">Calendar</string>
+    <string name="title_section2">Folders and files</string>
+    <string name="title_section3">Contacts</string>
+    <string name="title_section4">Mail</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_getEvents">Get calendar events</string>
+    <string name="action_createEvent">Create event</string>
+    <string name="action_UpdateEvent">Post</string>
+    <string name="action_refreshEvent">Refresh calendar events</string>
+    <string name="action_deleteEvent">Remove event</string>
+    <string name="action_getFilesAndFolders">Get files and folders</string>
+    <string name="action_readText">Read text</string>
+    <string name="action_createDemoText">Create demo.txt</string>
+    <string name="action_updateTextFile">Update text file</string>
+    <string name="action_CreateFile">Create text file</string>
+    <string name="action_UploadFile">Upload</string>
+    <string name="action_DownloadFile">Download</string>
+    <string name="mainButton_connect">Connect</string>
+    <string name="mainButton_Calendar">Calendar</string>
+    <string name="mainButton_Files">Files and folders</string>
+    <string name="mainButton_Mail">Mail</string>
+    <string name="mainButton_Contacts">Contacts</string>
+    <string name="mainActivity_Overview">Overview</string>
+    <string name="FoldersAndFilesActivity_ListLabel">Folders and files</string>
+    <string name="TodaysCalendarLabel">Today\'s Calendar</string>
+    <string name="CalendarEdit_TitlePlaceholder">Title:</string>
+    <string name="CalendarEdit_LocationPlaceholder">Location:</string>
+    <string name="CalendarEdit_AttendeesPlaceholder">Attendees:</string>
+    <string name="CalendarEdit_BodyPlaceholder">Body:</string>
+    <string name="CalendarEdit_StartDatePlaceholder">Start date:</string>
+    <string name="CalendarEdit_StartTimePlaceholder">Start time:</string>
+    <string name="CalendarEdit_EndDatePlaceholder">End date:</string>
+    <string name="CalendarEdit_EndTimePlaceholder">End time:</string>
+    <string name="TextFileContents_Label">Text file contents</string>
+    <string name="list_Label">Files and Folders</string>
+    <string name="calendarActivity_Overview"> To get started, select the Get calendar events button. This will get a list of events that occur between 6 hours before and after the current time. Learn more about the REST API calls made in this application by reading Calendar REST API in Office 365 APIs</string>
+    <string name="mainActivity_Readme">
+                        &lt;html&gt;&lt;head&gt;
+				&lt;style&gt;
+				body {color: white;}
+				a {color: #FFECE4}
+				&lt;/style&gt;
+				&lt;/head&gt;
+				&lt;body&gt;&lt;p&gt;This sample uses the &lt;b&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/office/dn605892(v=office.15).aspx"&gt;Office 365 preview API&lt;/a&gt;&lt;/b&gt;
+                client libraries to illustrate basic operations against the Calendar and My Files service endpoints in Office 365. It also demonstrates how to authenticate against multiple Office 365 services in your app, and retrieve user information from the Users and Groups service.&lt;/p&gt;
+                &lt;p&gt;To run this sample:&lt;/p&gt;
+                &lt;ol&gt;
+                &lt;li&gt;Add a &lt;b&gt;native&lt;/b&gt; application to Azure Active Directory. Configure the following permissions to other applications:&lt;/li&gt;
+                &lt;ul&gt;
+                &lt;li&gt;Office 365 Exchange Online
+                    &lt;ul&gt;
+                    &lt;li&gt;Read and write access to users\' mail&lt;/li&gt;
+                    &lt;li&gt;Send mail as a user&lt;/li&gt;
+                    &lt;li&gt;Have full access to users\' calendars&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/li&gt;
+                &lt;li&gt;Office 365 SharePoint Online
+                    &lt;ul&gt;
+                    &lt;li&gt;Edit or delete users\' files&lt;/li&gt;
+                    &lt;/ul&gt;
+                &lt;/li&gt;
+                &lt;/ul&gt;
+                For more information, see &lt;b&gt;&lt;a href="http://msdn.microsoft.com/en-us/library/azure/dn132599.aspx"&gt;Adding, Updating, and Removing an Application&lt;/a&gt;&lt;/b&gt;
+                &lt;li&gt;Take note of the client id and redirect uri values of the application in Azure Management Portal.&lt;/li&gt;
+                &lt;li&gt;Enter the client id and redirect uri values in the constants.java file, then compile and run this app.&lt;/li&gt;
+                &lt;li&gt;Click the sign in button on the action bar.&lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;p&gt;For more information, see &lt;b&gt;&lt;a href="http://aka.ms/o365-apis-start-android"&gt;Office 365 Starter Project Readme &lt;/a&gt;&lt;/b&gt;.&lt;/p&gt;
+                &lt;/body&gt;&lt;/html&gt;
+    </string>
+    <string name="title_activity_calendar">CalendarActivity</string>
+    <string name="hello_world">Office 365 API Starter project!</string>
+    <string name="title_activity_calendar_activitiy">CalendarActivitiy</string>
+    <string name="title_activity_files_and_folders">FilesAndFoldersActivity</string>
+    <string name="title_activity_main">Office 365 API Starter project!</string>
+    <string name="files_buttons_header">Actions</string>
+    <string name="files_view_intro">&lt;html>&lt;head>
+				&lt;style>
+				body {
+					color: white;
+				}
+				a {color: #FFECE4}
+				&lt;/style>
+				&lt;/head>
+				&lt;body>&lt;p>To get started, select the &lt;b>Get file and folder list&lt;/b> button. This
+will retrieve your files and folders in your default documents library. Learn about the REST API calls made in this application by reading
+&lt;b>&lt;a href="http://msdn.microsoft.com/en-us/library/office/dn605900(v=office.15).aspx">Files
+REST API in Office 365 APIs&lt;/a%gt;&lt;/b>.&lt;/p>
+                &lt;/body>&lt;/html></string>
+    <string name="calendar_view_intro">&lt;html>&lt;head>
+				&lt;style>
+				body {
+					color: white;
+				}
+				a {color: #FFECE4}
+				&lt;/style>
+				&lt;/head>
+				&lt;body>&lt;p>To get started, select the &lt;b>Get calendar events&lt;/b> button
+				 to retrieve the first page of calendar events. Learn about the REST API calls made in this
+				 application by reading
+&lt;b>&lt;a href="http://msdn.microsoft.com/en-us/library/office/dn792114(v=office.15).aspx">Calendar REST API in Office 365 APIs&lt;/a%gt;&lt;/b>.&lt;/p>
+                &lt;/body>&lt;/html></string>
+    <string name="email_view_intro">&lt;html>&lt;head>
+				&lt;style>
+				body {
+					color: white;
+				}
+				a {color: #FFECE4}
+				&lt;/style>
+				&lt;/head>
+				&lt;body>&lt;p>To get started, select the &lt;b>Get email&lt;/b> action menu item
+				 to retrieve the first page of email messages. Learn about the REST API calls made in this
+				 application by reading
+&lt;b>&lt;a href="https://msdn.microsoft.com/en-us/office/office365/api/mail-rest-operations">Mail REST operations&lt;/a%gt;&lt;/b>.&lt;/p>
+                &lt;/body>&lt;/html></string>
+    <string name="button_fileget">Get file and folder list</string>
+    <string name="button_filecreate">Create demo.txt</string>
+    <string name="button_filedelete">Delete file or folder</string>
+    <string name="button_fileread">Read text file</string>
+    <string name="button_fileupdate">Update text file</string>
+    <string name="button_fileget_short">Get</string>
+    <string name="button_filecreate_short">Create</string>
+    <string name="button_filedelete_short">Delete</string>
+    <string name="button_fileread_short">Read</string>
+    <string name="button_fileupdate_short">Update</string>
+    <string name="files_"></string>
+    <string name="title_activity_files">Office 365 Files API</string>
+    <string name="title_calendarevent_list">Office 365 Calendar API</string>
+    <string name="Calendar_EventDetails">Event Details</string>
+    <string name="Calendar_CreateEventDetails">Add new event</string>
+    <string name="Calendar_UpdateEventDetails">Update event</string>
+    <string name="title_calendarevent_detail">Calendar Event Detail</string>
+    <string name="MainActivity_SignInButtonText">(not connected)</string>
+    <string name="button_calendarGetEvents">Get calendar events</string>
+    <string name="button_calendarCreateEvent">Create event</string>
+    <string name="button_calendarUpdateEvent">Update event</string>
+    <string name="button_calendarDeleteEvent">Delete event</string>
+    <string name="button_UndoUpdate">Undo</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="Ok">OK</string>
+    <string name="EventDeleteLabel">Delete this event?</string>
+    <string name="FileDeleteLabel">Delete this file?</string>
+    <string name="clear_tokens">Clear tokens</string>
+    <string name="title_activity_calendar_event_view">CalendarEventViewActivity</string>
+    <string name="Calendar_EventCreateEmailHint">clintont@contoso.com;chrish@contoso.com</string>
+    <string name="title_file_list">Files</string>
+    <string name="title_file_detail">File Contents</string>
+    <string name="action_file_get">Get All Files</string>
+    <string name="action_file_read">Read File Contents</string>
+    <string name="action_file_create">Create New File</string>
+    <string name="action_file_update">Update File</string>
+    <string name="action_file_delete">Delete File</string>
+
+    <string-array name="month_abbr">
+        <item>Jan.</item>
+        <item>Feb.</item>
+        <item>Mar.</item>
+        <item>Apr.</item>
+        <item>May.</item>
+        <item>Jun.</item>
+        <item>Jul.</item>
+        <item>Aug.</item>
+        <item>Sep.</item>
+        <item>Oct.</item>
+        <item>Nov.</item>
+        <item>Dec.</item>
+    </string-array>
+    <string-array name="DOM_31">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+    </string-array>
+    <string-array name="DOM_30">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+    </string-array>
+    <string-array name="DOM_29">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+    </string-array>
+    <string-array name="Hour_Spinner">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+    <string-array name="Minute_Spinner">
+        <item>0</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+    </string-array>
+    <string-array name="Meridian_Spinner">
+        <item>AM</item>
+        <item>PM</item>
+    </string-array>
+
+    <string name="title_mailitem_list">Email Items</string>
+    <string name="title_mailitem_detail">Email Contents</string>
+    <string name="mail_compose_to_label">To:</string>
+    <string name="mail_compose_cc_label">Cc:</string>
+    <string name="mail_detail_from_label">From:</string>
+    <string name="mail_detail_to_label">To:</string>
+    <string name="mail_detail_cc_label">Cc:</string>
+    <string name="mail_detail_subject_label">Subject:</string>
+    <string name="mail_default_send_text">\n\n\n\nSent from my Office 365 Starter App</string>
+    <string name="action_new_mail">New</string>
+    <string name="action_getEmail">Refresh</string>
+    <string name="action_deleteEmail">Delete</string>
+    <string name="warning_clientid_redirecturi_incorrect">The client ID or redirect URI is not valid. Enter a valid client ID and redirect URI in the Constants.java file and run again</string>
+
+</resources>

@@ -1,0 +1,53 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+}
+
+eclipse.project {
+  	natures 'com.android.ide.eclipse.adt.AndroidNature'
+	natures 'org.eclipse.jdt.core.javanature'
+	buildCommands.clear();
+	buildCommand 'com.android.ide.eclipse.adt.ResourceManagerBuilder'
+	buildCommand 'com.android.ide.eclipse.adt.PreCompilerBuilder'
+	buildCommand 'org.eclipse.jdt.core.javabuilder'
+	buildCommand 'com.android.ide.eclipse.adt.ApkBuilder'
+}
+
+sourceSets.main.java.srcDirs 'java'
+
+dependencies {
+    // base OData library:
+    compile (group: 'com.microsoft.services', name: 'odata-engine-core', version: '0.11.1'){
+       exclude group: 'com.google.code.gson'
+    }
+    compile (group: 'com.microsoft.services', name: 'odata-engine-android-impl', version: '0.11.1'){
+       exclude group: 'com.google.code.gson'
+       exclude group: 'com.microsoft.aad'
+    }
+
+    // choose the outlook, discovery, and file services
+    compile (group: 'com.microsoft.services', name: 'outlook-services', version: '0.11.1'){
+       exclude group: 'com.google.code.gson'
+    }
+    compile (group: 'com.microsoft.services', name: 'discovery-services', version: '0.11.1'){
+       exclude group: 'com.google.code.gson'
+    }
+    compile (group: 'com.microsoft.services', name: 'file-services', version: '0.11.1'){
+       exclude group: 'com.google.code.gson'
+    }
+}
+

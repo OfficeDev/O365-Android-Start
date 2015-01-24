@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+     <item android:id="@+id/action_file_get"
+          android:icon="@drawable/ic_action_refresh"
+          android:title="@string/action_file_get"
+          android:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_file_read"
+          android:icon="@drawable/ic_action_view_as_list"
+          android:title="@string/action_file_read"
+          android:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_file_create"
+          android:icon="@drawable/ic_action_new"
+          android:title="@string/action_file_create"
+          android:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_file_delete"
+          android:icon="@drawable/ic_action_remove"
+          android:title="@string/action_file_delete"
+          android:showAsAction="ifRoom"/>
+      <item android:id="@+id/action_file_update"
+          android:icon="@drawable/ic_action_edit"
+          android:title="@string/action_file_update"
+          android:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_pick_file"
+          android:title="Upload File"
+          android:icon="@drawable/ic_action_upload"
+          android:showAsAction="ifRoom"/>
+    <item android:id="@+id/action_download_file"
+          android:title="Download File"
+          android:icon="@drawable/ic_action_download"
+          android:showAsAction="ifRoom"/>
+
+</menu>

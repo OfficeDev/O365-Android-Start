@@ -1,0 +1,150 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <WebView
+        android:id="@+id/fileStarterTextWebView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:scrollbars="none"
+        android:text="@string/files_view_intro" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:baselineAligned="false"
+        android:divider="?android:attr/dividerHorizontal"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        tools:context="com.microsoft.office365.starter.FilesFolders.FileListActivity" >
+
+        <!--
+    This layout is a two-pane layout for the FilesToo
+    master/detail flow. See res/values-large/refs.xml and
+    res/values-sw600dp/refs.xml for an example of layout aliases
+    that replace the single-pane version of the layout with
+    this two-pane version.
+
+    For more on layout aliases, see: http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
+
+        -->
+
+        <LinearLayout
+            android:id="@+id/file_buttons_fragment_sub"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/HeaderTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/files_buttons_header" >
+            </TextView>
+
+            <Button
+                android:id="@+id/button_fileget"
+                style="@style/ButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:onClick="actionGetFiles"
+                android:text="@string/button_fileget" >
+            </Button>
+
+            <Button
+                android:id="@+id/button_filecreate"
+                style="@style/ButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:onClick="actionCreateFile"
+                android:text="@string/button_filecreate" >
+            </Button>
+
+            <Button
+                android:id="@+id/button_filedelete"
+                style="@style/ButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:onClick="actionDeleteFile"
+                android:text="@string/button_filedelete" >
+            </Button>
+
+            <Button
+                android:id="@+id/button_fileread"
+                style="@style/ButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:onClick="actionReadAction"
+                android:text="@string/button_fileread" >
+            </Button>
+
+            <Button
+                android:id="@+id/button_fileupdate"
+                style="@style/ButtonTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:onClick="actionUpdateFile"
+                android:text="@string/button_fileupdate" >
+            </Button>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/file_list_twopane_container"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                style="@style/HeaderTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/list_Label" >
+            </TextView>
+
+            <fragment
+                android:id="@+id/file_list"
+                android:name="com.microsoft.office365.starter.FilesFolders.FileListFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout="@android:layout/list_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <FrameLayout
+                android:id="@+id/file_detail_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

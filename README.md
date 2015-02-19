@@ -5,7 +5,9 @@
 * [Change History](#history)
 * [Device requirements](#requirements)
 * [Set up your environment](#setup)
-* [Run the starter project](#running)
+* [Open the project using Android Studio](#studio)
+* [Open the project using Eclipse](#eclipse)
+* [Run the project](#running)
 * [Understanding the code](#understanding)
    * [Authentication](#authentication)
    * [Calendar API](#calendar)
@@ -98,7 +100,8 @@ select the Active Directory tab and an Office 365 tenant.
 
 The details of configuring the Android starter project depend on your current development environment. While we can't give you detailed instructions, we can give you the basic steps that you need to follow.
 
-### Open Starter Project using Android Studio
+<a name="studio"/>
+## Open the project using Android Studio
 
 1. Install [Android Studio](http://developer.android.com/tools/studio/index.html#install-updates) and add the Android SDK packages according to the [instructions](http://developer.android.com/sdk/installing/adding-packages.html) on developer.android.com.
 2. Download or clone the
@@ -115,7 +118,8 @@ The details of configuring the Android starter project depend on your current de
 > *  The [Azure Active Directory Authentication Library for Android](https://github.com/AzureAD/azure-activedirectory-library-for-android).
 > * The [Office 365 SDK for Android](https://github.com/OfficeDev/Office-365-SDK-for-Android).
 
-### Open Starter Project using Eclipse
+<a name="eclipse"/>
+## Open the project using Eclipse
 
 1. Install and configure the Android Developer Tools and Eclipse according to the [instructions](http://developer.android.com/tools/help/adt.html) on developer.android.com.
 2. Download or clone the
@@ -139,7 +143,7 @@ The details of configuring the Android starter project depend on your current de
 	2. Find the REDIRECT_URI constant and set its String value equal to the redirect URI you registered in Azure Active Directory.
 
 <a name="running"/>
-## Run the starter project
+## Run the project
 
 Once you've built the starter project you can run it on an emulator or device.
 

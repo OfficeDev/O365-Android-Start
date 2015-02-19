@@ -44,7 +44,7 @@ We'll be updating the starter project to add other services, such as Contacts, s
 
 <a name="history">
 ## Change History
-January 23, 2014:
+January 23, 2015:
 
 * Added Mail support.
 * Added File upload and download support.
@@ -103,7 +103,9 @@ The details of configuring the Android starter project depend on your current de
 1. Install [Android Studio](http://developer.android.com/tools/studio/index.html#install-updates) and add the Android SDK packages according to the [instructions](http://developer.android.com/sdk/installing/adding-packages.html) on developer.android.com.
 2. Download or clone the
    [Office 365 Starter Project for Android](https://github.com/OfficeDev/O365-Android-Start).
-3. Start Android Studio and open the starter project.
+3. Start Android Studio.
+	1. Choose **Open an existing Android Studio project**.
+	2. Select the **build.gradle** file in the **O365-Android-Start** folder and click **OK**.
 4. Open the constants.java file in the com.microsoft.office365.starter.helpers package.
 	1. Find the CLIENT_ID constant and set its String value equal to the client id you registered in Azure Active Directory.
 	2. Find the REDIRECT_URI constant and set its String value equal to the redirect URI you registered in Azure Active Directory.

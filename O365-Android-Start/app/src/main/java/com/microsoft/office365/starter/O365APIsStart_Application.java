@@ -25,7 +25,7 @@ import com.microsoft.office365.starter.FilesFolders.O365FileListModel;
 import com.microsoft.office365.starter.FilesFolders.O365FileModel;
 import com.microsoft.office365.starter.Email.O365MailItemsModel;
 import com.microsoft.services.odata.impl.DefaultDependencyResolver;
-import com.microsoft.sharepointservices.odata.SharePointClient;
+import com.microsoft.fileservices.odata.SharePointClient;
 import com.microsoft.outlookservices.odata.OutlookClient;
 
 public class O365APIsStart_Application extends Application {

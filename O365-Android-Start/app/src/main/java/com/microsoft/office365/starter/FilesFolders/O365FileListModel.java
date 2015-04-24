@@ -24,7 +24,7 @@ import com.microsoft.office365.starter.O365APIsStart_Application;
 import com.microsoft.office365.starter.helpers.APIErrorMessageHelper;
 import com.microsoft.office365.starter.interfaces.OnOperationCompleteListener;
 import com.microsoft.office365.starter.interfaces.OnOperationCompleteListener.OperationResult;
-import com.microsoft.sharepointservices.odata.SharePointClient;
+import com.microsoft.fileservices.odata.SharePointClient;
 
 public class O365FileListModel
 {

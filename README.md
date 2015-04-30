@@ -90,10 +90,10 @@ The starter project requires that your client application has a specific set of 
 1. In the [Azure management portal](https://manage.windowsazure.com/),
 select the Active Directory tab and an Office 365 tenant.
 2. Choose the **Applications** tab and click the application that you want to configure.
-3. In the **permissions to other applications** section, add the following two permissions.
-   * Add the **Office 365 SharePoint Online** application (1), and select the **Edit or delete users' files** permission (2).
+3. In the **permissions to other applications** section, add the following permission.
+   * Add the **Office 365 SharePoint Online** application (1), and select the **Read and write user files** permission (2).
    ![SharePoint application permissions](/readme-images/o365-sharepoint-permissions.JPG)
-   * Add the **Office 365 Exchange Online** application (3), and select the **Read and write access to users' mail**, **Send mail as a user**, and **Have full access to users' calendars** permissions (4).
+   * Add the **Office 365 Exchange Online** application (3), and select the **Read and write user calendars**, **Send mail as a user**, and **Read and write user mail** permissions (4).
    ![Exchange application permissions](/readme-images/o365-exchange-permissions.JPG)
 4. Save the changes.
 

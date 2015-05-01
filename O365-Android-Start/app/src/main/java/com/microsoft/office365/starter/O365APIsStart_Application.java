@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
+import com.microsoft.aad.adal.AuthenticationSettings;
 import com.microsoft.discoveryservices.ServiceInfo;
 import com.microsoft.discoveryservices.odata.DiscoveryClient;
 import com.microsoft.office365.starter.helpers.AuthenticationController;
@@ -144,6 +145,15 @@ public class O365APIsStart_Application extends Application {
 
 		mDefaultUEH = Thread.getDefaultUncaughtExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler(handler);
+
+
+		// We're not using Microsoft Intune's Company portal app,
+		// skip the broker check so we don't get warnings about the following permissions
+		// in manifest:
+		// GET_ACCOUNTS
+		// USE_CREDENTIALS
+		// MANAGE_ACCOUNTS
+		AuthenticationSettings.INSTANCE.setSkipBroker(true);
 	}
 
 

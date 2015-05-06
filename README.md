@@ -60,7 +60,7 @@ December 19, 2014:
 To run the starter project your device needs to meet the following requirements:
 
 * A screen size of 4 inches or larger.
-* Android API level 18 or later.
+* Android API level 15 or later.
  
 <a name="setup"/>
 ## Set up your environment
@@ -135,7 +135,7 @@ The details of configuring the Android starter project depend on your current de
 	2. Run `gradle -b eclipse.gradle eclipse`
 7. Import the *app\src\main* folder of the starter project into your Eclipse workspace.
 8. In Eclipse, open the properties of the main project. Go to the Android tab.
-	1. In *Project Build Target* choose *API level 18*.
+	1. In *Project Build Target* choose *API level 15*.
 	2. In the *Library* section, add the AuthenticationActivity project.
 9. Open the constants.java file in the com.microsoft.office365.starter.helpers package.
 	1. Find the CLIENT_ID constant and set its String value equal to the client id you registered in Azure Active Directory.

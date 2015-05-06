@@ -4,32 +4,38 @@
 
 package com.microsoft.office365.starter;
 
-import java.util.List;
-import java.util.NoSuchElementException;
 import android.app.Activity;
 import android.app.Application;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.ArrayAdapter;
+
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.aad.adal.AuthenticationSettings;
 import com.microsoft.discoveryservices.ServiceInfo;
 import com.microsoft.discoveryservices.odata.DiscoveryClient;
+import com.microsoft.fileservices.odata.SharePointClient;
+import com.microsoft.office365.starter.Calendar.O365CalendarModel;
+import com.microsoft.office365.starter.Email.O365MailItemsModel;
+import com.microsoft.office365.starter.FilesFolders.O365FileListModel;
+import com.microsoft.office365.starter.FilesFolders.O365FileModel;
 import com.microsoft.office365.starter.helpers.AuthenticationController;
 import com.microsoft.office365.starter.helpers.Constants;
 import com.microsoft.office365.starter.interfaces.OnServicesDiscoveredListener;
-import com.microsoft.office365.starter.Calendar.O365CalendarModel;
-import com.microsoft.office365.starter.FilesFolders.O365FileListModel;
-import com.microsoft.office365.starter.FilesFolders.O365FileModel;
-import com.microsoft.office365.starter.Email.O365MailItemsModel;
-import com.microsoft.services.odata.impl.DefaultDependencyResolver;
-import com.microsoft.fileservices.odata.SharePointClient;
 import com.microsoft.outlookservices.odata.OutlookClient;
+import com.microsoft.services.odata.impl.DefaultDependencyResolver;
+
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class O365APIsStart_Application extends Application {
+	private static final String TAG = "StartApplication";
 	private Thread.UncaughtExceptionHandler mDefaultUEH;
 	private boolean mUserIsAuthenticated = false;
 	private O365CalendarModel mCalendarModel = null;
@@ -146,6 +152,10 @@ public class O365APIsStart_Application extends Application {
 		mDefaultUEH = Thread.getDefaultUncaughtExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler(handler);
 
+		// Devices with API level lower than 18 must setup an encryption key.
+		if (Build.VERSION.SDK_INT < 18 && AuthenticationSettings.INSTANCE.getSecretKeyData() == null) {
+			AuthenticationSettings.INSTANCE.setSecretKey(generateSecretKey());
+		}
 
 		// We're not using Microsoft Intune's Company portal app,
 		// skip the broker check so we don't get warnings about the following permissions
@@ -156,6 +166,30 @@ public class O365APIsStart_Application extends Application {
 		AuthenticationSettings.INSTANCE.setSkipBroker(true);
 	}
 
+	/**
+	 * Generates an encryption key for devices with API level lower than 18 using the
+	 * ANDROID_ID value as a seed.
+	 * In production scenarios, you should come up with your own implementation of this method.
+	 * Consider that your algorithm must return the same key so it can encrypt/decrypt values
+	 * successfully.
+	 * @return The encryption key in a 32 byte long array.
+	 */
+	private byte[] generateSecretKey() {
+		byte[] key = new byte[32];
+		byte[] android_id = null;
+
+		try{
+			android_id = Settings.Secure.ANDROID_ID.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e){
+			Log.e(TAG, "generateSecretKey - " + e.getMessage());
+		}
+
+		for(int i = 0; i < key.length; i++){
+			key[i] = android_id[i % android_id.length];
+		}
+
+		return key;
+	}
 
 	public void clearCookies() {
 		CookieSyncManager syncManager = CookieSyncManager.createInstance(this);

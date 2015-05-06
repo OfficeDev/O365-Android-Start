@@ -35,205 +35,205 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class O365APIsStart_Application extends Application {
-	private static final String TAG = "StartApplication";
-	private Thread.UncaughtExceptionHandler mDefaultUEH;
-	private boolean mUserIsAuthenticated = false;
-	private O365CalendarModel mCalendarModel = null;
+    private static final String TAG = "StartApplication";
+    private Thread.UncaughtExceptionHandler mDefaultUEH;
+    private boolean mUserIsAuthenticated = false;
+    private O365CalendarModel mCalendarModel = null;
 
-	private O365FileListModel mFileListViewState;
-	private O365FileModel mDisplayedFile;
+    private O365FileListModel mFileListViewState;
+    private O365FileModel mDisplayedFile;
     private O365MailItemsModel mMailItemsModel;
     private ArrayAdapter<O365FileModel> mFileAdapterList;
-	private List<ServiceInfo> mServices;
-	private SharePointClient mFileClient;
-	private OutlookClient mCalendarClient;
+    private List<ServiceInfo> mServices;
+    private SharePointClient mFileClient;
+    private OutlookClient mCalendarClient;
     private OutlookClient mMailClient;
     private OnServicesDiscoveredListener mOnServicesDiscoveredResultListener;
 
 
-    public O365MailItemsModel getMailItemsModel()
-    {
+    public O365MailItemsModel getMailItemsModel() {
         return mMailItemsModel;
     }
 
-	public O365FileListModel getFileListViewState() {
-		return mFileListViewState;
-	}
+    public O365FileListModel getFileListViewState() {
+        return mFileListViewState;
+    }
 
-	public void setFileListViewState(O365FileListModel value) {
-		mFileListViewState = value;
-	}
+    public void setFileListViewState(O365FileListModel value) {
+        mFileListViewState = value;
+    }
 
-	public O365FileModel getDisplayedFile() {
-		return mDisplayedFile;
-	}
+    public O365FileModel getDisplayedFile() {
+        return mDisplayedFile;
+    }
 
-	public void setDisplayedFile(O365FileModel value) {
-		mDisplayedFile = value;
-	}
+    public void setDisplayedFile(O365FileModel value) {
+        mDisplayedFile = value;
+    }
 
-	public ArrayAdapter<O365FileModel> getFileAdapterList() {
-		return mFileAdapterList;
-	}
+    public ArrayAdapter<O365FileModel> getFileAdapterList() {
+        return mFileAdapterList;
+    }
 
-	public void setFileAdapterList(ArrayAdapter<O365FileModel> value) {
-		mFileAdapterList = value;
-	}
+    public void setFileAdapterList(ArrayAdapter<O365FileModel> value) {
+        mFileAdapterList = value;
+    }
 
-	public O365CalendarModel getCalendarModel() {
-		return mCalendarModel;
-	}
+    public O365CalendarModel getCalendarModel() {
+        return mCalendarModel;
+    }
 
-	public void setCalendarModel(O365CalendarModel calendarModel) {
-		mCalendarModel = calendarModel;
-	}
+    public void setCalendarModel(O365CalendarModel calendarModel) {
+        mCalendarModel = calendarModel;
+    }
 
-    public void setMailItemsModel(O365MailItemsModel mailItemsModel){
+    public void setMailItemsModel(O365MailItemsModel mailItemsModel) {
         mMailItemsModel = mailItemsModel;
     }
 
-	public boolean userIsAuthenticated() {
-		return mUserIsAuthenticated;
-	}
+    public boolean userIsAuthenticated() {
+        return mUserIsAuthenticated;
+    }
 
-	private Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler() {
+    private Thread.UncaughtExceptionHandler handler = new Thread.UncaughtExceptionHandler() {
 
-		@Override
-		public void uncaughtException(Thread thread, Throwable ex) {
-			Log.e("Client", "UncaughtException", ex);
-			mDefaultUEH.uncaughtException(thread, ex);
-		}
-	};
+        @Override
+        public void uncaughtException(Thread thread, Throwable ex) {
+            Log.e("Client", "UncaughtException", ex);
+            mDefaultUEH.uncaughtException(thread, ex);
+        }
+    };
 
-	public void setOnServicesDiscoveredResultListener(OnServicesDiscoveredListener listener) {
-		mOnServicesDiscoveredResultListener = listener;
-	}
+    public void setOnServicesDiscoveredResultListener(OnServicesDiscoveredListener listener) {
+        mOnServicesDiscoveredResultListener = listener;
+    }
 
-	public void discoverServices(final Activity currentActivity) {
+    public void discoverServices(final Activity currentActivity) {
         AuthenticationController.getInstance().setResourceId(Constants.DISCOVERY_RESOURCE_ID);
-		DefaultDependencyResolver dependencyResolver = (DefaultDependencyResolver) AuthenticationController
-				.getInstance().getDependencyResolver();
-		DiscoveryClient discoveryClient = new DiscoveryClient(Constants.DISCOVERY_RESOURCE_URL, dependencyResolver);
+        DefaultDependencyResolver dependencyResolver = (DefaultDependencyResolver) AuthenticationController
+                .getInstance().getDependencyResolver();
+        DiscoveryClient discoveryClient = new DiscoveryClient(Constants.DISCOVERY_RESOURCE_URL, dependencyResolver);
 
-		try {
-			ListenableFuture<List<ServiceInfo>> services = discoveryClient
-					.getservices().read();
-			Futures.addCallback(services,
-					new FutureCallback<List<ServiceInfo>>() {
-						@Override
-						public void onSuccess(final List<ServiceInfo> result) {
-							mUserIsAuthenticated = true;
-							mServices = result;
-							final OnServicesDiscoveredListener.Event event = new OnServicesDiscoveredListener.Event();
-							event.setServicesAreDiscovered(true);
-							currentActivity.runOnUiThread(new Runnable() {
-								@Override
-								public void run() {
-									mOnServicesDiscoveredResultListener
-											.onServicesDiscoveredEvent(event);
-								}
-							});
-						}
+        try {
+            ListenableFuture<List<ServiceInfo>> services = discoveryClient
+                    .getservices().read();
+            Futures.addCallback(services,
+                    new FutureCallback<List<ServiceInfo>>() {
+                        @Override
+                        public void onSuccess(final List<ServiceInfo> result) {
+                            mUserIsAuthenticated = true;
+                            mServices = result;
+                            final OnServicesDiscoveredListener.Event event = new OnServicesDiscoveredListener.Event();
+                            event.setServicesAreDiscovered(true);
+                            currentActivity.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mOnServicesDiscoveredResultListener
+                                            .onServicesDiscoveredEvent(event);
+                                }
+                            });
+                        }
 
-						@Override
-						public void onFailure(final Throwable t) {
-							Log.e("Asset", t.getMessage());
-						}
-					});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+                        @Override
+                        public void onFailure(final Throwable t) {
+                            Log.e("Asset", t.getMessage());
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public void onCreate() {
-		super.onCreate();
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
-		mDefaultUEH = Thread.getDefaultUncaughtExceptionHandler();
-		Thread.setDefaultUncaughtExceptionHandler(handler);
+        mDefaultUEH = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(handler);
 
-		// Devices with API level lower than 18 must setup an encryption key.
-		if (Build.VERSION.SDK_INT < 18 && AuthenticationSettings.INSTANCE.getSecretKeyData() == null) {
-			AuthenticationSettings.INSTANCE.setSecretKey(generateSecretKey());
-		}
+        // Devices with API level lower than 18 must setup an encryption key.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2
+                && AuthenticationSettings.INSTANCE.getSecretKeyData() == null) {
+            AuthenticationSettings.INSTANCE.setSecretKey(generateSecretKey());
+        }
 
-		// We're not using Microsoft Intune's Company portal app,
-		// skip the broker check so we don't get warnings about the following permissions
-		// in manifest:
-		// GET_ACCOUNTS
-		// USE_CREDENTIALS
-		// MANAGE_ACCOUNTS
-		AuthenticationSettings.INSTANCE.setSkipBroker(true);
-	}
+        // We're not using Microsoft Intune's Company portal app,
+        // skip the broker check so we don't get warnings about the following permissions
+        // in manifest:
+        // GET_ACCOUNTS
+        // USE_CREDENTIALS
+        // MANAGE_ACCOUNTS
+        AuthenticationSettings.INSTANCE.setSkipBroker(true);
+    }
 
-	/**
-	 * Generates an encryption key for devices with API level lower than 18 using the
-	 * ANDROID_ID value as a seed.
-	 * In production scenarios, you should come up with your own implementation of this method.
-	 * Consider that your algorithm must return the same key so it can encrypt/decrypt values
-	 * successfully.
-	 * @return The encryption key in a 32 byte long array.
-	 */
-	private byte[] generateSecretKey() {
-		byte[] key = new byte[32];
-		byte[] android_id = null;
+    /**
+     * Generates an encryption key for devices with API level lower than 18 using the
+     * ANDROID_ID value as a seed.
+     * In production scenarios, you should come up with your own implementation of this method.
+     * Consider that your algorithm must return the same key so it can encrypt/decrypt values
+     * successfully.
+     *
+     * @return The encryption key in a 32 byte long array.
+     */
+    private byte[] generateSecretKey() {
+        byte[] key = new byte[32];
+        byte[] android_id = null;
 
-		try{
-			android_id = Settings.Secure.ANDROID_ID.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException e){
-			Log.e(TAG, "generateSecretKey - " + e.getMessage());
-		}
+        try {
+            android_id = Settings.Secure.ANDROID_ID.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "generateSecretKey - " + e.getMessage());
+        }
 
-		for(int i = 0; i < key.length; i++){
-			key[i] = android_id[i % android_id.length];
-		}
+        for (int i = 0; i < key.length; i++) {
+            key[i] = android_id[i % android_id.length];
+        }
 
-		return key;
-	}
+        return key;
+    }
 
-	public void clearCookies() {
-		CookieSyncManager syncManager = CookieSyncManager.createInstance(this);
-		if (syncManager != null) {
-			CookieManager cookieManager = CookieManager.getInstance();
-			cookieManager.removeAllCookie();
-			CookieSyncManager.getInstance().sync();
-		}
-	}
+    public void clearCookies() {
+        CookieSyncManager syncManager = CookieSyncManager.createInstance(this);
+        if (syncManager != null) {
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.removeAllCookie();
+            CookieSyncManager.getInstance().sync();
+        }
+    }
 
-	public void clearClientObjects() {
-		mFileClient = null;
-		mCalendarClient = null;
+    public void clearClientObjects() {
+        mFileClient = null;
+        mCalendarClient = null;
         mMailClient = null;
-	}
+    }
 
-    public void clearTokens(){
-        if (AuthenticationController.getInstance().getAuthenticationContext() != null)
-        {
+    public void clearTokens() {
+        if (AuthenticationController.getInstance().getAuthenticationContext() != null) {
             AuthenticationController.getInstance().getAuthenticationContext().getCache().removeAll();
         }
     }
 
-	private ServiceInfo getService(String capability) {
-		if (mServices == null)
-			return null;
-		for (ServiceInfo service : mServices)
-			if (service.getcapability().equals(capability))
-				return service;
+    private ServiceInfo getService(String capability) {
+        if (mServices == null)
+            return null;
+        for (ServiceInfo service : mServices)
+            if (service.getcapability().equals(capability))
+                return service;
 
-		throw new NoSuchElementException(
-				"The Office 365 capability "
-						+ capability
-						+ "was not found in services. Current capabilities are 'MyFiles', 'Calendar', and 'Mail'");
-	}
+        throw new NoSuchElementException(
+                "The Office 365 capability "
+                        + capability
+                        + "was not found in services. Current capabilities are 'MyFiles', 'Calendar', and 'Mail'");
+    }
 
-	/**
-	 * Gets the current list client.
-	 *
-	 * @return the current list client
-	 */
-	public SharePointClient getFileClient() {
-		if (mFileClient != null)
-			return mFileClient;
+    /**
+     * Gets the current list client.
+     *
+     * @return the current list client
+     */
+    public SharePointClient getFileClient() {
+        if (mFileClient != null)
+            return mFileClient;
 
         ServiceInfo discoveryInfo = getService(Constants.MYFILES_CAPABILITY);
         String serviceEndpointUri = discoveryInfo.getserviceEndpointUri();
@@ -242,26 +242,26 @@ public class O365APIsStart_Application extends Application {
         AuthenticationController.getInstance().setResourceId(serviceResourceId);
         DefaultDependencyResolver dependencyResolver = (DefaultDependencyResolver) AuthenticationController.getInstance().getDependencyResolver();
 
-		mFileClient = new SharePointClient(serviceEndpointUri, dependencyResolver);
-		return mFileClient;
-	}
+        mFileClient = new SharePointClient(serviceEndpointUri, dependencyResolver);
+        return mFileClient;
+    }
 
-	// This method should get and cache the client. Returned the cached client.
-	// It should be good for the life of the app.
-	public OutlookClient getCalendarClient() {
-		if (mCalendarClient != null)
-			return mCalendarClient;
+    // This method should get and cache the client. Returned the cached client.
+    // It should be good for the life of the app.
+    public OutlookClient getCalendarClient() {
+        if (mCalendarClient != null)
+            return mCalendarClient;
 
-		ServiceInfo discoveryInfo = getService(Constants.CALENDAR_CAPABILITY);
-		String serviceEndpointUri = discoveryInfo.getserviceEndpointUri();
+        ServiceInfo discoveryInfo = getService(Constants.CALENDAR_CAPABILITY);
+        String serviceEndpointUri = discoveryInfo.getserviceEndpointUri();
         String serviceResourceId = discoveryInfo.getserviceResourceId();
 
         AuthenticationController.getInstance().setResourceId(serviceResourceId);
         DefaultDependencyResolver dependencyResolver = (DefaultDependencyResolver) AuthenticationController.getInstance().getDependencyResolver();
 
-		mCalendarClient = new OutlookClient(serviceEndpointUri, dependencyResolver);
-		return mCalendarClient;
-	}
+        mCalendarClient = new OutlookClient(serviceEndpointUri, dependencyResolver);
+        return mCalendarClient;
+    }
 
     // This method should get and cache the client. Returned the cached client.
     // It should be good for the life of the app.

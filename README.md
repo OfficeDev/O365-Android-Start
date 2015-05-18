@@ -1,5 +1,7 @@
 # Office 365 APIs Starter Project for Android
 
+[日本 (日本語)](/loc/README-ja.md)
+
 **Table of contents**
 
 * [Change History](#history)

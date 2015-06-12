@@ -1,6 +1,6 @@
 # Office 365 APIs Starter Project for Android
 
-[日本 (日本語)](/loc/README-ja.md)
+[日本 (日本語)](/loc/README-ja.md) (Japanese)
 
 **Table of contents**
 

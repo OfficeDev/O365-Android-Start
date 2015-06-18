@@ -206,6 +206,9 @@ We'd love to get your feedback on this Android starter kit. You can send your qu
 * [Microsoft Office 365 API Tools](https://visualstudiogallery.msdn.microsoft.com/a15b85e6-69a7-4fdf-adda-a38066bb5155)
 * [Office Dev Center](http://dev.office.com/)
 * [Office 365 APIs starter projects and code samples](http://msdn.microsoft.com/office/office365/howto/starter-projects-and-code-samples)
+* [Office 365 Connect Sample for Android](https://github.com/OfficeDev/O365-Android-Connect)
+* [Office 365 Code Snippets for Android](https://github.com/OfficeDev/O365-Android-Snippets)
+* [Office 365 Profile sample for Android](https://github.com/OfficeDev/O365-Android-Profile)
 
 
 ## Copyright

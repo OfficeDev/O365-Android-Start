@@ -205,7 +205,7 @@ We'd love to get your feedback on this Android starter kit. You can send your qu
 * [Mail REST operations reference](https://msdn.microsoft.com/office/office365/api/mail-rest-operations)
 * [Microsoft Office 365 API Tools](https://visualstudiogallery.msdn.microsoft.com/a15b85e6-69a7-4fdf-adda-a38066bb5155)
 * [Office Dev Center](http://dev.office.com/)
-* [Office 365 APIs starter projects and code samples](http://msdn.microsoft.com/en-us/office/office365/howto/starter-projects-and-code-samples)
+* [Office 365 APIs starter projects and code samples](http://msdn.microsoft.com/office/office365/howto/starter-projects-and-code-samples)
 
 
 ## Copyright

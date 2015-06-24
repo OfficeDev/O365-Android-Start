@@ -199,7 +199,7 @@ We'd love to get your feedback on this Android starter kit. You can send your qu
 <a name="resources"/>
 ## Additional resources
 
-* [Office 365 APIs documentation](http://msdn.microsoft.com/office/office365/howto/platform-development-overview)
+* [Office 365 APIs platform overview](http://msdn.microsoft.com/office/office365/howto/platform-development-overview)
 * [File REST operations reference](https://msdn.microsoft.com/office/office365/api/files-rest-operations)
 * [Calendar REST operations reference](http://msdn.microsoft.com/office/office365/api/calendar-rest-operations)
 * [Mail REST operations reference](https://msdn.microsoft.com/office/office365/api/mail-rest-operations)

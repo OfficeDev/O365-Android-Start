@@ -190,11 +190,9 @@ The **getMessageList(int pageSize,int skipToMessageNumber)** method gets a list 
 <a name="questions"/>
 ## Questions and comments
 
-We'd love to get your feedback on this Android starter kit. You can send your questions and suggestions to us:
+We'd love to get your feedback on the O365 Android Starter project. You can send your questions and suggestions to us in the [Issues](https://github.com/OfficeDev/O365-Android-Start/issues) section of this repository.
 
-* In the [Issues](https://github.com/OfficeDev/O365-Android-Start/issues) section of this repository.
-* On [Stack Overflow](http://stackoverflow.com/questions/tagged/Office365+API). 
-  Make sure that your questions or comments are tagged with [Office365] and [API].
+Questions about Office 365 development in general should be posted to [Stack Overflow](http://stackoverflow.com/questions/tagged/Office365+API). Make sure that your questions or comments are tagged with [Office365] and [API].
   
 <a name="resources"/>
 ## Additional resources

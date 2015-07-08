@@ -1,5 +1,7 @@
 # Android 版 Office 365 API スタート プロジェクト
 
+[日本 (日本語)](/loc/README-ja.md) (日本語)
+
 **目次**
 
 * [変更履歴](#history)
@@ -60,7 +62,7 @@ Microsoft では、スタート プロジェクトを更新して、連絡先な
 スタート プロジェクトを実行するには、デバイスが次の要件を満たしている必要があります。
 
 * 画面のサイズが 4 インチ以上である。
-* Android の API レベルが 18 以上である。
+* Android の API レベルが 15 以上である。
  
 <a name="setup" />
 ## 環境を設定する
@@ -129,7 +131,7 @@ Android スタート プロジェクトの構成の詳細は、現在の開発�
 	2. `gradle -b eclipse.gradle eclipse` を実行します。
 7. スタート プロジェクトの *app\src\main* フォルダーを Eclipse ワークスペースにインポートします。
 8. Eclipse で、メイン プロジェクトのプロパティを開きます。[Android] タブに移動します。
-	1. *[プロジェクトのビルド ターゲット]* で、[API レベル 18] を選択します。
+	1. *[プロジェクトのビルド ターゲット]* で、*API レベル 15*を選択します。
 	2. *[ライブラリ]* セクションで、AuthenticationActivity プロジェクトを追加します。
 9. com.microsoft.office365.starter.helpers パッケージの constants.java ファイルを開きます。
 	1. CLIENT_ID 定数を検索して、その String 値を Azure Active Directory に登録されているクライアント ID と同じ値に設定します。
@@ -182,25 +184,25 @@ Office 365 SDK for Android では、認証に Android 版 Azure Active Directory
 <a name="questions" />
 ## 質問とコメント
 
-この Android スタート キットについて、Microsoft にフィードバックをお寄せください。質問やご提案を送信する方法は次のとおりです。
+O365 Android Starter プロジェクトについて、Microsoft にフィードバックをお寄せください。質問や提案につきましては、このリポジトリの「[問題](https://github.com/OfficeDev/O365-Android-Start/issues)」セクションに送信できます。
 
-* このリポジトリの「[問題](https://github.com/OfficeDev/O365-Android-Start/issues)」セクション。
-* [スタック オーバーフロー](http://stackoverflow.com/questions/tagged/Office365+API)で。質問またはコメントには、必ず [Office365] および [API] のタグを付けてください。
+Office 365 開発全般の質問につきましては、「[スタック オーバーフロー](http://stackoverflow.com/questions/tagged/Office365+API)」に投稿してください。質問またはコメントには、必ず [Office365] および [API] のタグを付けてください。
   
 <a name="resources" />
 ## その他の技術情報
 
-* [Office 365 API ドキュメント](http://msdn.microsoft.com/office/office365/howto/platform-development-overview)
+* [Office 365 API プラットフォームの概要](http://msdn.microsoft.com/office/office365/howto/platform-development-overview)
 * [ファイルの REST 操作のリファレンス](https://msdn.microsoft.com/office/office365/api/files-rest-operations)
 * [予定表の REST 操作のリファレンス](http://msdn.microsoft.com/office/office365/api/calendar-rest-operations)
 * [メールの REST 操作のリファレンス](https://msdn.microsoft.com/office/office365/api/mail-rest-operations)
 * [Microsoft Office 365 API ツール](https://visualstudiogallery.msdn.microsoft.com/a15b85e6-69a7-4fdf-adda-a38066bb5155)
 * [Office デベロッパー センター](http://dev.office.com/)
-* [Office 365 API スタート プロジェクトおよびサンプル コード](http://msdn.microsoft.com/en-us/office/office365/howto/starter-projects-and-code-samples)
+* [Office 365 API スタート プロジェクトおよびサンプル コード](http://msdn.microsoft.com/office/office365/howto/starter-projects-and-code-samples)
+* [Android 用 Office 365 Connect のサンプル](https://github.com/OfficeDev/O365-Android-Connect)
+* [Android 用 Office 365 コード スニペット](https://github.com/OfficeDev/O365-Android-Snippets)
+* [Android 用 Office 365 プロファイル サンプル](https://github.com/OfficeDev/O365-Android-Profile)
 
 
 ## 著作権
 Copyright (c) Microsoft. All rights reserved.
-
-
 

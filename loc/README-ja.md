@@ -1,5 +1,7 @@
 # Android 版 Office 365 API スタート プロジェクト
 
+[![Build Status](https://travis-ci.org/OfficeDev/O365-Android-Start.svg?branch=master)](https://travis-ci.org/OfficeDev/O365-Android-Start)
+
 [日本 (日本語)](/loc/README-ja.md) (日本語)
 
 **目次**

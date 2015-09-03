@@ -6,6 +6,17 @@ android:
   - extra
   - android-21
   - build-tools-22.0.1
-
 script:
-  - gradle clean build
+- gradle clean build
+notifications:
+  slack:
+    secure: EBASzVeaFfB6IFDbkjVxyf/46ASCK8P8i4LDSuOz6RaQV/3eUBFkzLqBJ88KPFWCh8N3OWS38HHhvxilA6Zec7SAd0rifl7jSQFBCuU8ds3vMvuRgHP4l/8rAoN6g+4//T7cUxuVnLZT2KFg+PSQNftq5mr3ExbTgV6mkvX5xxY=
+    on_success: never
+    on_failure: always
+    on_start: never
+
+  email:
+    recipients:
+    - jak@microsoft.com
+    on_success: never
+    on_failure: always

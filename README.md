@@ -76,7 +76,7 @@ To use the Office 365 APIs starter project for Android you need the following:
 * The latest version of [Android Studio](http://developer.android.com/sdk/index.html).
 	* Optionally, you can use the latest version of the [Android Developer Tools](http://developer.android.com/tools/help/adt.html) including Eclipse.
 * The [Gradle](http://www.gradle.org) build automation system version 2.2.1 or later.
-* An Office 365 account. You can [Join the Office 365 Developer Program and get a free 1 year subscription to Office 365](https://profile.microsoft.com/RegSysProfileCenter/wizardnp.aspx?wizid=14b845d0-938c-45af-b061-f798fbb4d170&lcid=1033) that includes all of the tools and resources that you need to start building and testing Android apps.
+* An Office 365 account. You can [join the Office 365 Developer Program and get a free 1 year subscription to Office 365](https://profile.microsoft.com/RegSysProfileCenter/wizardnp.aspx?wizid=14b845d0-938c-45af-b061-f798fbb4d170&lcid=1033) that includes all of the tools and resources that you need to start building and testing Android apps.
 
 ### Create a client application in Azure
 

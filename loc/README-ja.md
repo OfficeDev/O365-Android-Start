@@ -1,6 +1,6 @@
 # Android 版 Office 365 API スタート プロジェクト
 
-[![Build Status](https://travis-ci.org/OfficeDev/O365-Android-Start.svg?branch=master)](https://travis-ci.org/OfficeDev/O365-Android-Start)
+[![ビルドの状況](https://travis-ci.org/OfficeDev/O365-Android-Start.svg?branch=master)](https://travis-ci.org/OfficeDev/O365-Android-Start)
 
 [日本 (日本語)](/loc/README-ja.md) (日本語)
 
@@ -76,7 +76,7 @@ Android 版 Office 365 API スタート プロジェクトを使用するには�
 * [Android Studio](http://developer.android.com/sdk/index.html) の最新バージョン。
 	* オプションで、Eclipse などの [Android Developer Tools](http://developer.android.com/tools/help/adt.html) の最新バージョンを使用できます。
 * [Gradle](http://www.gradle.org) ビルド自動化システム バージョン 2.2.1 以上。
-* Office 365 アカウント。[Microsoft Office 365 Developer](https://portal.microsoftonline.com/Signup/MainSignUp.aspx?OfferId=6881A1CB-F4EB-4db3-9F18-388898DAF510&DL=DEVELOPERPACK) サブスクリプションにサイン アップすることができます。ここには、Android アプリのビルドとテストの開始に必要なツールとリソースがすべて含まれています。
+* Office 365 アカウント。 [Office 365 開発者プログラムに参加し、Office 365 の 1 年間の無料サブスクリプションを取得](https://profile.microsoft.com/RegSysProfileCenter/wizardnp.aspx?wizid=14b845d0-938c-45af-b061-f798fbb4d170&amp;lcid=1033)しましょう。それには Android アプリの構築を開始し、テストするために必要なすべてのツールとリソースも含まれています。
 
 ### Azure でクライアント アプリケーションを作成する
 
@@ -94,8 +94,10 @@ Android 版 Office 365 API スタート プロジェクトを使用するには�
 1. [Azure 管理ポータル](https://manage.windowsazure.com/)で、[Active Directory] タブと Office 365 テナントを選択します。
 2. **[アプリケーション]** タブを選択し、構成するアプリケーションをクリックします。
 3. **[他のアプリケーションへのアクセス許可]** セクションで、次のアクセス許可を追加します。
-   * [**Office 365 SharePoint Online** アプリケーション (1)] を追加し、[**ユーザー ファイルの読み取りと書き込み** のアクセス許可 (2)] を選択します。![SharePoint アプリケーションのアクセス許可](../readme-images/o365-sharepoint-permissions.JPG)
-   * **Office 365 Exchange Online** アプリケーション (3) を追加してから、**ユーザーの予定表の読み取りと書き込み**、**ユーザーとしてメールを送信**、および **ユーザーのメールの読み取りと書き込み** の各アクセス許可 (4) を選択します。![Exchange アプリケーションのアクセス許可](../readme-images/o365-exchange-permissions.JPG)
+   * [**Office 365 SharePoint Online** アプリケーション (1)] を追加し、[**ユーザー ファイルの読み取りと書き込み** のアクセス許可 (2)] を選択します。
+   ![SharePoint アプリケーションのアクセス許可](/readme-images/o365-sharepoint-permissions.JPG)
+   * **Office 365 Exchange Online** アプリケーション (3) を追加してから、**ユーザーの予定表の読み取りと書き込み**、**ユーザーとしてメールを送信**、および **ユーザーのメールの読み取りと書き込み** の各アクセス許可 (4) を選択します。
+   ![Exchange アプリケーションのアクセス許可](/readme-images/o365-exchange-permissions.JPG)
 4. 変更を保存します。
 
 Android スタート プロジェクトの構成の詳細は、現在の開発環境によって異なります。詳細な説明はできませんが、必要な基本手順について説明します。

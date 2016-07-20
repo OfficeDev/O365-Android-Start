@@ -76,7 +76,7 @@ Android 版 Office 365 API スタート プロジェクトを使用するには�
 * [Android Studio](http://developer.android.com/sdk/index.html) の最新バージョン。
 	* オプションで、Eclipse などの [Android Developer Tools](http://developer.android.com/tools/help/adt.html) の最新バージョンを使用できます。
 * [Gradle](http://www.gradle.org) ビルド自動化システム バージョン 2.2.1 以上。
-* Office 365 アカウント。 [Office 365 開発者プログラムに参加し、Office 365 の 1 年間の無料サブスクリプションを取得](https://profile.microsoft.com/RegSysProfileCenter/wizardnp.aspx?wizid=14b845d0-938c-45af-b061-f798fbb4d170&amp;lcid=1033)しましょう。それには Android アプリの構築を開始し、テストするために必要なすべてのツールとリソースも含まれています。
+* Office 365 アカウント。 [Office 365 開発者プログラムに参加し、Office 365 の 1 年間の無料サブスクリプションを取得](https://aka.ms/devprogramsignup)しましょう。それには Android アプリの構築を開始し、テストするために必要なすべてのツールとリソースも含まれています。
 
 ### Azure でクライアント アプリケーションを作成する
 
